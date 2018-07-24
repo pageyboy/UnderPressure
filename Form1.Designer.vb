@@ -1,5 +1,5 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-Partial Class frmMain
+Partial Class Form1
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
@@ -34,19 +34,18 @@ Partial Class frmMain
         Me.lbl_DeltaPressure = New System.Windows.Forms.Label()
         Me.TabControl1 = New System.Windows.Forms.TabControl()
         Me.TabPage1 = New System.Windows.Forms.TabPage()
-        Me.Chart1 = New System.Windows.Forms.DataVisualization.Charting.Chart()
         Me.TabPage2 = New System.Windows.Forms.TabPage()
+        Me.Label7 = New System.Windows.Forms.Label()
+        Me.Label8 = New System.Windows.Forms.Label()
+        Me.Label9 = New System.Windows.Forms.Label()
+        Me.Label10 = New System.Windows.Forms.Label()
+        Me.Chart1 = New System.Windows.Forms.DataVisualization.Charting.Chart()
         Me.DataGridView1 = New System.Windows.Forms.DataGridView()
-        Me.lbl_PlusMinus = New System.Windows.Forms.Label()
-        Me.lbl_RangeTF = New System.Windows.Forms.Label()
-        Me.lbl_RangeDT = New System.Windows.Forms.Label()
-        Me.lbl_RangeDiff = New System.Windows.Forms.Label()
         Me.btn_Test = New System.Windows.Forms.Button()
-        Me.lbl_mTorr = New System.Windows.Forms.Label()
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
-        CType(Me.Chart1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabPage2.SuspendLayout()
+        CType(Me.Chart1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.DataGridView1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -127,7 +126,7 @@ Partial Class frmMain
         Me.TabControl1.Location = New System.Drawing.Point(12, 450)
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
-        Me.TabControl1.Size = New System.Drawing.Size(1069, 274)
+        Me.TabControl1.Size = New System.Drawing.Size(1176, 274)
         Me.TabControl1.TabIndex = 11
         '
         'TabPage1
@@ -136,10 +135,61 @@ Partial Class frmMain
         Me.TabPage1.Location = New System.Drawing.Point(4, 22)
         Me.TabPage1.Name = "TabPage1"
         Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage1.Size = New System.Drawing.Size(1061, 248)
+        Me.TabPage1.Size = New System.Drawing.Size(1168, 248)
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "Graphical"
         Me.TabPage1.UseVisualStyleBackColor = True
+        '
+        'TabPage2
+        '
+        Me.TabPage2.Controls.Add(Me.DataGridView1)
+        Me.TabPage2.Location = New System.Drawing.Point(4, 22)
+        Me.TabPage2.Name = "TabPage2"
+        Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
+        Me.TabPage2.Size = New System.Drawing.Size(1168, 248)
+        Me.TabPage2.TabIndex = 1
+        Me.TabPage2.Text = "Data"
+        Me.TabPage2.UseVisualStyleBackColor = True
+        '
+        'Label7
+        '
+        Me.Label7.AutoSize = True
+        Me.Label7.Font = New System.Drawing.Font("Arial monospaced for SAP", 72.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label7.Location = New System.Drawing.Point(583, 216)
+        Me.Label7.Name = "Label7"
+        Me.Label7.Size = New System.Drawing.Size(105, 110)
+        Me.Label7.TabIndex = 12
+        Me.Label7.Text = "±"
+        '
+        'Label8
+        '
+        Me.Label8.AutoSize = True
+        Me.Label8.Font = New System.Drawing.Font("Arial monospaced for SAP", 72.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label8.Location = New System.Drawing.Point(694, 216)
+        Me.Label8.Name = "Label8"
+        Me.Label8.Size = New System.Drawing.Size(395, 110)
+        Me.Label8.TabIndex = 13
+        Me.Label8.Text = "9.9999"
+        '
+        'Label9
+        '
+        Me.Label9.AutoSize = True
+        Me.Label9.Font = New System.Drawing.Font("Arial monospaced for SAP", 72.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label9.Location = New System.Drawing.Point(694, 106)
+        Me.Label9.Name = "Label9"
+        Me.Label9.Size = New System.Drawing.Size(395, 110)
+        Me.Label9.TabIndex = 14
+        Me.Label9.Text = "9.9999"
+        '
+        'Label10
+        '
+        Me.Label10.AutoSize = True
+        Me.Label10.Font = New System.Drawing.Font("Arial monospaced for SAP", 72.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label10.Location = New System.Drawing.Point(694, 326)
+        Me.Label10.Name = "Label10"
+        Me.Label10.Size = New System.Drawing.Size(395, 110)
+        Me.Label10.TabIndex = 15
+        Me.Label10.Text = "9.9999"
         '
         'Chart1
         '
@@ -154,20 +204,9 @@ Partial Class frmMain
         Series1.Legend = "Legend1"
         Series1.Name = "Series1"
         Me.Chart1.Series.Add(Series1)
-        Me.Chart1.Size = New System.Drawing.Size(1055, 242)
+        Me.Chart1.Size = New System.Drawing.Size(1162, 242)
         Me.Chart1.TabIndex = 0
         Me.Chart1.Text = "Chart1"
-        '
-        'TabPage2
-        '
-        Me.TabPage2.Controls.Add(Me.DataGridView1)
-        Me.TabPage2.Location = New System.Drawing.Point(4, 22)
-        Me.TabPage2.Name = "TabPage2"
-        Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage2.Size = New System.Drawing.Size(1168, 248)
-        Me.TabPage2.TabIndex = 1
-        Me.TabPage2.Text = "Data"
-        Me.TabPage2.UseVisualStyleBackColor = True
         '
         'DataGridView1
         '
@@ -178,81 +217,26 @@ Partial Class frmMain
         Me.DataGridView1.Size = New System.Drawing.Size(1162, 242)
         Me.DataGridView1.TabIndex = 0
         '
-        'lbl_PlusMinus
-        '
-        Me.lbl_PlusMinus.AutoSize = True
-        Me.lbl_PlusMinus.Font = New System.Drawing.Font("Arial monospaced for SAP", 26.25!)
-        Me.lbl_PlusMinus.Location = New System.Drawing.Point(583, 251)
-        Me.lbl_PlusMinus.Name = "lbl_PlusMinus"
-        Me.lbl_PlusMinus.Size = New System.Drawing.Size(101, 40)
-        Me.lbl_PlusMinus.TabIndex = 12
-        Me.lbl_PlusMinus.Text = "Torr"
-        '
-        'lbl_RangeTF
-        '
-        Me.lbl_RangeTF.AutoSize = True
-        Me.lbl_RangeTF.Font = New System.Drawing.Font("Arial monospaced for SAP", 72.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lbl_RangeTF.Location = New System.Drawing.Point(732, 216)
-        Me.lbl_RangeTF.Name = "lbl_RangeTF"
-        Me.lbl_RangeTF.Size = New System.Drawing.Size(221, 110)
-        Me.lbl_RangeTF.TabIndex = 13
-        Me.lbl_RangeTF.Text = "999"
-        Me.lbl_RangeTF.Visible = False
-        '
-        'lbl_RangeDT
-        '
-        Me.lbl_RangeDT.AutoSize = True
-        Me.lbl_RangeDT.Font = New System.Drawing.Font("Arial monospaced for SAP", 72.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lbl_RangeDT.Location = New System.Drawing.Point(732, 106)
-        Me.lbl_RangeDT.Name = "lbl_RangeDT"
-        Me.lbl_RangeDT.Size = New System.Drawing.Size(221, 110)
-        Me.lbl_RangeDT.TabIndex = 14
-        Me.lbl_RangeDT.Text = "999"
-        Me.lbl_RangeDT.Visible = False
-        '
-        'lbl_RangeDiff
-        '
-        Me.lbl_RangeDiff.AutoSize = True
-        Me.lbl_RangeDiff.Font = New System.Drawing.Font("Arial monospaced for SAP", 72.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lbl_RangeDiff.Location = New System.Drawing.Point(732, 326)
-        Me.lbl_RangeDiff.Name = "lbl_RangeDiff"
-        Me.lbl_RangeDiff.Size = New System.Drawing.Size(221, 110)
-        Me.lbl_RangeDiff.TabIndex = 15
-        Me.lbl_RangeDiff.Text = "999"
-        Me.lbl_RangeDiff.Visible = False
-        '
         'btn_Test
         '
         Me.btn_Test.Font = New System.Drawing.Font("Arial monospaced for SAP", 26.25!)
-        Me.btn_Test.Location = New System.Drawing.Point(838, 12)
+        Me.btn_Test.Location = New System.Drawing.Point(945, 12)
         Me.btn_Test.Name = "btn_Test"
         Me.btn_Test.Size = New System.Drawing.Size(243, 66)
         Me.btn_Test.TabIndex = 16
         Me.btn_Test.Text = "Test"
         Me.btn_Test.UseVisualStyleBackColor = True
         '
-        'lbl_mTorr
-        '
-        Me.lbl_mTorr.AutoSize = True
-        Me.lbl_mTorr.Font = New System.Drawing.Font("Arial monospaced for SAP", 26.25!)
-        Me.lbl_mTorr.Location = New System.Drawing.Point(959, 251)
-        Me.lbl_mTorr.Name = "lbl_mTorr"
-        Me.lbl_mTorr.Size = New System.Drawing.Size(122, 40)
-        Me.lbl_mTorr.TabIndex = 17
-        Me.lbl_mTorr.Text = "mTorr"
-        Me.lbl_mTorr.Visible = False
-        '
-        'frmMain
+        'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1102, 736)
-        Me.Controls.Add(Me.lbl_mTorr)
+        Me.ClientSize = New System.Drawing.Size(1200, 736)
         Me.Controls.Add(Me.btn_Test)
-        Me.Controls.Add(Me.lbl_RangeDiff)
-        Me.Controls.Add(Me.lbl_RangeDT)
-        Me.Controls.Add(Me.lbl_RangeTF)
-        Me.Controls.Add(Me.lbl_PlusMinus)
+        Me.Controls.Add(Me.Label10)
+        Me.Controls.Add(Me.Label9)
+        Me.Controls.Add(Me.Label8)
+        Me.Controls.Add(Me.Label7)
         Me.Controls.Add(Me.TabControl1)
         Me.Controls.Add(Me.Label5)
         Me.Controls.Add(Me.lbl_DeltaPressure)
@@ -261,12 +245,12 @@ Partial Class frmMain
         Me.Controls.Add(Me.Label3)
         Me.Controls.Add(Me.lbl_DTPressure)
         Me.Controls.Add(Me.btn_Connection)
-        Me.Name = "frmMain"
+        Me.Name = "Form1"
         Me.Text = "Under Pressure - Drift Tube Pressure Monitor"
         Me.TabControl1.ResumeLayout(False)
         Me.TabPage1.ResumeLayout(False)
-        CType(Me.Chart1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.TabPage2.ResumeLayout(False)
+        CType(Me.Chart1, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.DataGridView1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
@@ -285,10 +269,9 @@ Partial Class frmMain
     Friend WithEvents Chart1 As DataVisualization.Charting.Chart
     Friend WithEvents TabPage2 As TabPage
     Friend WithEvents DataGridView1 As DataGridView
-    Friend WithEvents lbl_PlusMinus As Label
-    Friend WithEvents lbl_RangeTF As Label
-    Friend WithEvents lbl_RangeDT As Label
-    Friend WithEvents lbl_RangeDiff As Label
+    Friend WithEvents Label7 As Label
+    Friend WithEvents Label8 As Label
+    Friend WithEvents Label9 As Label
+    Friend WithEvents Label10 As Label
     Friend WithEvents btn_Test As Button
-    Friend WithEvents lbl_mTorr As Label
 End Class
