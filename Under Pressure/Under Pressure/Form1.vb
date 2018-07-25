@@ -12,8 +12,8 @@
 
     Private Sub btn_Test_Click(sender As Object, e As EventArgs) Handles btn_Test.Click
         Dim r As Random = New Random
-        Dim randomDT As Single = r.Next(3950, 4100) / 1000
-        Dim randomTF As Single = r.Next(3800, 3950) / 1000
+        Dim randomDT As Single = r.Next(39500, 41000) / 10000
+        Dim randomTF As Single = r.Next(38000, 39500) / 10000
         updateData(randomDT, randomTF)
     End Sub
 
