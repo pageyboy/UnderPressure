@@ -1,10 +1,23 @@
-﻿Public Class frmMain
+﻿Imports System
+Imports System.IO.Ports
+Imports System.Threading
+Imports System.Windows.Forms
+Imports System.ComponentModel
+
+
+Public Class frmMain
+
+    Inherits Form
 
     Dim recentDT(4) As Single
     Dim recentTF(4) As Single
     Dim recentDiff(4) As Single
     Dim currentReading As Integer = 0
     Dim totalReadings As Integer = 0
+
+    Dim theThread As System.Threading.Thread
+    Dim com7 As IO.Ports.SerialPort = Nothing
+    Dim _continue As Boolean = False
 
     Private Sub frmMain_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
@@ -46,6 +59,54 @@
         Else
             currentReading += 1
         End If
+    End Sub
+
+    Public Sub TestMultiThreading()
+
+        Dim returnStr As String = ""
+
+        Try
+            com7 = My.Computer.Ports.OpenSerialPort("COM7", 19200, Parity.None, 8, StopBits.One)
+            com7.ReadTimeout = 10000
+            Do
+                If _continue = True Then
+                    Dim incoming As String = com7.ReadLine()
+                    If incoming Is Nothing Then
+                        Exit Do
+                    Else
+                        Debug.Print(incoming)
+                        UpdateScreen(incoming)
+                    End If
+                Else
+                    com7.Close()
+                    Exit Sub
+                End If
+            Loop
+        Catch ex As TimeoutException
+            MessageBox.Show("Serial Port lost or not detected")
+        End Try
+
+    End Sub
+
+    Private Sub btn_Connection_Click(sender As Object, e As EventArgs) Handles btn_Connection.Click
+
+        If _continue = False Then
+            _continue = True
+            theThread = New Threading.Thread(AddressOf TestMultiThreading)
+            theThread.Start()
+            btn_Connection.Text = "Disconnect"
+        Else
+            _continue = False
+            btn_Connection.Text = "Connect"
+        End If
+
+    End Sub
+
+    Sub UpdateScreen(readLine As String)
+        Dim r As Random = New Random
+        Dim randomDT As Single = r.Next(39500, 41000) / 10000
+        Dim randomTF As Single = r.Next(38000, 39500) / 10000
+        updateData(randomDT, randomTF)
     End Sub
 
 End Class

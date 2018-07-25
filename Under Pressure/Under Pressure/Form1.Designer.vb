@@ -164,7 +164,7 @@ Partial Class frmMain
         Me.TabPage2.Location = New System.Drawing.Point(4, 22)
         Me.TabPage2.Name = "TabPage2"
         Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage2.Size = New System.Drawing.Size(1168, 248)
+        Me.TabPage2.Size = New System.Drawing.Size(1061, 248)
         Me.TabPage2.TabIndex = 1
         Me.TabPage2.Text = "Data"
         Me.TabPage2.UseVisualStyleBackColor = True
@@ -175,7 +175,7 @@ Partial Class frmMain
         Me.DataGridView1.Dock = System.Windows.Forms.DockStyle.Fill
         Me.DataGridView1.Location = New System.Drawing.Point(3, 3)
         Me.DataGridView1.Name = "DataGridView1"
-        Me.DataGridView1.Size = New System.Drawing.Size(1162, 242)
+        Me.DataGridView1.Size = New System.Drawing.Size(1055, 242)
         Me.DataGridView1.TabIndex = 0
         '
         'lbl_PlusMinus
