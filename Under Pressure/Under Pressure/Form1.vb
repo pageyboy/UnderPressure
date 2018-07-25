@@ -9,6 +9,8 @@ Public Class frmMain
 
     Inherits Form
 
+    Delegate Sub SetTextCallback([text] As String)
+
     Dim recentDT(4) As Single
     Dim recentTF(4) As Single
     Dim recentDiff(4) As Single
@@ -19,8 +21,13 @@ Public Class frmMain
     Dim com7 As IO.Ports.SerialPort = Nothing
     Dim _continue As Boolean = False
 
-    Private Sub frmMain_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-
+    Private Sub SetText(ByVal [text] As String)
+        If Me.lbl_DeltaPressure.InvokeRequired Then
+            Dim d As New SetTextCallback(AddressOf SetText)
+            Me.Invoke(d, New Object() {[text]})
+        Else
+            Me.lbl_DTPressure.Text = "0.0000"
+        End If
     End Sub
 
     Private Sub btn_Test_Click(sender As Object, e As EventArgs) Handles btn_Test.Click
@@ -75,7 +82,7 @@ Public Class frmMain
                         Exit Do
                     Else
                         Debug.Print(incoming)
-                        UpdateScreen(incoming)
+                        SetText(incoming.ToString())
                     End If
                 Else
                     com7.Close()
@@ -100,13 +107,6 @@ Public Class frmMain
             btn_Connection.Text = "Connect"
         End If
 
-    End Sub
-
-    Sub UpdateScreen(readLine As String)
-        Dim r As Random = New Random
-        Dim randomDT As Single = r.Next(39500, 41000) / 10000
-        Dim randomTF As Single = r.Next(38000, 39500) / 10000
-        updateData(randomDT, randomTF)
     End Sub
 
 End Class
