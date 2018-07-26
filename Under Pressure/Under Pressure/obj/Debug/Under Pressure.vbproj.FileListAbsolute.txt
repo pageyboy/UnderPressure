@@ -2,7 +2,6 @@ D:\Side Projects\Visual Studio\IMQTOF Pressures\Under Pressure\Under Pressure\bi
 D:\Side Projects\Visual Studio\IMQTOF Pressures\Under Pressure\Under Pressure\bin\Debug\Under Pressure.exe
 D:\Side Projects\Visual Studio\IMQTOF Pressures\Under Pressure\Under Pressure\bin\Debug\Under Pressure.pdb
 D:\Side Projects\Visual Studio\IMQTOF Pressures\Under Pressure\Under Pressure\bin\Debug\Under Pressure.xml
-D:\Side Projects\Visual Studio\IMQTOF Pressures\Under Pressure\Under Pressure\obj\Debug\Under Pressure.vbprojResolveAssemblyReference.cache
 D:\Side Projects\Visual Studio\IMQTOF Pressures\Under Pressure\Under Pressure\obj\Debug\Under_Pressure.frmMain.resources
 D:\Side Projects\Visual Studio\IMQTOF Pressures\Under Pressure\Under Pressure\obj\Debug\Under_Pressure.Resources.resources
 D:\Side Projects\Visual Studio\IMQTOF Pressures\Under Pressure\Under Pressure\obj\Debug\Under Pressure.vbproj.GenerateResource.Cache
@@ -10,3 +9,4 @@ D:\Side Projects\Visual Studio\IMQTOF Pressures\Under Pressure\Under Pressure\ob
 D:\Side Projects\Visual Studio\IMQTOF Pressures\Under Pressure\Under Pressure\obj\Debug\Under Pressure.exe
 D:\Side Projects\Visual Studio\IMQTOF Pressures\Under Pressure\Under Pressure\obj\Debug\Under Pressure.xml
 D:\Side Projects\Visual Studio\IMQTOF Pressures\Under Pressure\Under Pressure\obj\Debug\Under Pressure.pdb
+D:\Side Projects\Visual Studio\IMQTOF Pressures\Under Pressure\Under Pressure\obj\Debug\Under Pressure.vbprojResolveAssemblyReference.cache
