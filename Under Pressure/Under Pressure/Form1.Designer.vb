@@ -22,9 +22,9 @@ Partial Class frmMain
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Dim ChartArea2 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
-        Dim Legend2 As System.Windows.Forms.DataVisualization.Charting.Legend = New System.Windows.Forms.DataVisualization.Charting.Legend()
-        Dim Series2 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
+        Dim ChartArea1 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
+        Dim Legend1 As System.Windows.Forms.DataVisualization.Charting.Legend = New System.Windows.Forms.DataVisualization.Charting.Legend()
+        Dim Series1 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
         Me.btn_Connection = New System.Windows.Forms.Button()
         Me.lbl_DTPressure = New System.Windows.Forms.Label()
         Me.Label3 = New System.Windows.Forms.Label()
@@ -36,7 +36,7 @@ Partial Class frmMain
         Me.TabPage1 = New System.Windows.Forms.TabPage()
         Me.Chart1 = New System.Windows.Forms.DataVisualization.Charting.Chart()
         Me.TabPage2 = New System.Windows.Forms.TabPage()
-        Me.DataGridView1 = New System.Windows.Forms.DataGridView()
+        Me.dgv_Data = New System.Windows.Forms.DataGridView()
         Me.TabPage3 = New System.Windows.Forms.TabPage()
         Me.txtBox_Hyperterminal = New System.Windows.Forms.TextBox()
         Me.lbl_PlusMinus = New System.Windows.Forms.Label()
@@ -51,11 +51,16 @@ Partial Class frmMain
         Me.lbl_DT_RSD = New System.Windows.Forms.Label()
         Me.lbl_Delta_RSD = New System.Windows.Forms.Label()
         Me.lbl_PercentSign = New System.Windows.Forms.Label()
+        Me.lbl_DataPoints = New System.Windows.Forms.Label()
+        Me.TimeDate = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.DTPressure = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.TFPressure = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.DiffPressure = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         CType(Me.Chart1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabPage2.SuspendLayout()
-        CType(Me.DataGridView1, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.dgv_Data, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabPage3.SuspendLayout()
         CType(Me.num_DataPoints, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -147,47 +152,52 @@ Partial Class frmMain
         Me.TabPage1.Location = New System.Drawing.Point(4, 22)
         Me.TabPage1.Name = "TabPage1"
         Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage1.Size = New System.Drawing.Size(1061, 248)
+        Me.TabPage1.Size = New System.Drawing.Size(1359, 248)
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "Graphical"
         Me.TabPage1.UseVisualStyleBackColor = True
         '
         'Chart1
         '
-        ChartArea2.Name = "ChartArea1"
-        Me.Chart1.ChartAreas.Add(ChartArea2)
+        ChartArea1.Name = "ChartArea1"
+        Me.Chart1.ChartAreas.Add(ChartArea1)
         Me.Chart1.Dock = System.Windows.Forms.DockStyle.Fill
-        Legend2.Name = "Legend1"
-        Me.Chart1.Legends.Add(Legend2)
+        Legend1.Name = "Legend1"
+        Me.Chart1.Legends.Add(Legend1)
         Me.Chart1.Location = New System.Drawing.Point(3, 3)
         Me.Chart1.Name = "Chart1"
-        Series2.ChartArea = "ChartArea1"
-        Series2.Legend = "Legend1"
-        Series2.Name = "Series1"
-        Me.Chart1.Series.Add(Series2)
-        Me.Chart1.Size = New System.Drawing.Size(1055, 242)
+        Series1.ChartArea = "ChartArea1"
+        Series1.Legend = "Legend1"
+        Series1.Name = "Series1"
+        Me.Chart1.Series.Add(Series1)
+        Me.Chart1.Size = New System.Drawing.Size(1353, 242)
         Me.Chart1.TabIndex = 0
         Me.Chart1.Text = "Chart1"
         '
         'TabPage2
         '
-        Me.TabPage2.Controls.Add(Me.DataGridView1)
+        Me.TabPage2.Controls.Add(Me.dgv_Data)
         Me.TabPage2.Location = New System.Drawing.Point(4, 22)
         Me.TabPage2.Name = "TabPage2"
         Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage2.Size = New System.Drawing.Size(1061, 248)
+        Me.TabPage2.Size = New System.Drawing.Size(1359, 248)
         Me.TabPage2.TabIndex = 1
         Me.TabPage2.Text = "Data"
         Me.TabPage2.UseVisualStyleBackColor = True
         '
-        'DataGridView1
+        'dgv_Data
         '
-        Me.DataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.DataGridView1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.DataGridView1.Location = New System.Drawing.Point(3, 3)
-        Me.DataGridView1.Name = "DataGridView1"
-        Me.DataGridView1.Size = New System.Drawing.Size(1055, 242)
-        Me.DataGridView1.TabIndex = 0
+        Me.dgv_Data.AllowUserToAddRows = False
+        Me.dgv_Data.AllowUserToDeleteRows = False
+        Me.dgv_Data.AllowUserToResizeRows = False
+        Me.dgv_Data.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.dgv_Data.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.TimeDate, Me.DTPressure, Me.TFPressure, Me.DiffPressure})
+        Me.dgv_Data.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.dgv_Data.Location = New System.Drawing.Point(3, 3)
+        Me.dgv_Data.Name = "dgv_Data"
+        Me.dgv_Data.ReadOnly = True
+        Me.dgv_Data.Size = New System.Drawing.Size(1353, 242)
+        Me.dgv_Data.TabIndex = 0
         '
         'TabPage3
         '
@@ -285,11 +295,10 @@ Partial Class frmMain
         '
         'num_DataPoints
         '
-        Me.num_DataPoints.Enabled = False
         Me.num_DataPoints.Font = New System.Drawing.Font("Arial monospaced for SAP", 26.25!)
-        Me.num_DataPoints.Location = New System.Drawing.Point(441, 13)
+        Me.num_DataPoints.Location = New System.Drawing.Point(925, 13)
         Me.num_DataPoints.Maximum = New Decimal(New Integer() {120, 0, 0, 0})
-        Me.num_DataPoints.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
+        Me.num_DataPoints.Minimum = New Decimal(New Integer() {5, 0, 0, 0})
         Me.num_DataPoints.Name = "num_DataPoints"
         Me.num_DataPoints.Size = New System.Drawing.Size(87, 48)
         Me.num_DataPoints.TabIndex = 20
@@ -339,12 +348,48 @@ Partial Class frmMain
         Me.lbl_PercentSign.Text = "%"
         Me.lbl_PercentSign.Visible = False
         '
+        'lbl_DataPoints
+        '
+        Me.lbl_DataPoints.AutoSize = True
+        Me.lbl_DataPoints.Font = New System.Drawing.Font("Arial monospaced for SAP", 26.25!)
+        Me.lbl_DataPoints.Location = New System.Drawing.Point(440, 16)
+        Me.lbl_DataPoints.Name = "lbl_DataPoints"
+        Me.lbl_DataPoints.Size = New System.Drawing.Size(479, 40)
+        Me.lbl_DataPoints.TabIndex = 25
+        Me.lbl_DataPoints.Text = "Data Readings to Proc."
+        '
+        'TimeDate
+        '
+        Me.TimeDate.HeaderText = "Date & Time"
+        Me.TimeDate.Name = "TimeDate"
+        Me.TimeDate.ReadOnly = True
+        '
+        'DTPressure
+        '
+        Me.DTPressure.HeaderText = "Drift Tube Pressure"
+        Me.DTPressure.Name = "DTPressure"
+        Me.DTPressure.ReadOnly = True
+        '
+        'TFPressure
+        '
+        Me.TFPressure.HeaderText = "Trap Funnel Pressure"
+        Me.TFPressure.Name = "TFPressure"
+        Me.TFPressure.ReadOnly = True
+        '
+        'DiffPressure
+        '
+        Me.DiffPressure.HeaderText = "Differential Pressure"
+        Me.DiffPressure.Name = "DiffPressure"
+        Me.DiffPressure.ReadOnly = True
+        '
         'frmMain
         '
+        Me.AcceptButton = Me.btn_Connection
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.ClientSize = New System.Drawing.Size(1391, 736)
+        Me.Controls.Add(Me.lbl_DataPoints)
         Me.Controls.Add(Me.lbl_PercentSign)
         Me.Controls.Add(Me.lbl_Delta_RSD)
         Me.Controls.Add(Me.lbl_DT_RSD)
@@ -372,7 +417,7 @@ Partial Class frmMain
         Me.TabPage1.ResumeLayout(False)
         CType(Me.Chart1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.TabPage2.ResumeLayout(False)
-        CType(Me.DataGridView1, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.dgv_Data, System.ComponentModel.ISupportInitialize).EndInit()
         Me.TabPage3.ResumeLayout(False)
         Me.TabPage3.PerformLayout()
         CType(Me.num_DataPoints, System.ComponentModel.ISupportInitialize).EndInit()
@@ -392,7 +437,7 @@ Partial Class frmMain
     Friend WithEvents TabPage1 As TabPage
     Friend WithEvents Chart1 As DataVisualization.Charting.Chart
     Friend WithEvents TabPage2 As TabPage
-    Friend WithEvents DataGridView1 As DataGridView
+    Friend WithEvents dgv_Data As DataGridView
     Friend WithEvents lbl_PlusMinus As Label
     Friend WithEvents lbl_RangeTF As Label
     Friend WithEvents lbl_RangeDT As Label
@@ -407,4 +452,9 @@ Partial Class frmMain
     Friend WithEvents lbl_DT_RSD As Label
     Friend WithEvents lbl_Delta_RSD As Label
     Friend WithEvents lbl_PercentSign As Label
+    Friend WithEvents lbl_DataPoints As Label
+    Friend WithEvents TimeDate As DataGridViewTextBoxColumn
+    Friend WithEvents DTPressure As DataGridViewTextBoxColumn
+    Friend WithEvents TFPressure As DataGridViewTextBoxColumn
+    Friend WithEvents DiffPressure As DataGridViewTextBoxColumn
 End Class

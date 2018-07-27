@@ -3,15 +3,18 @@ Imports System.IO.Ports
 Imports System.Threading
 Imports System.Windows.Forms
 Imports System.ComponentModel
-
+Imports System.Collections.Generic
+Imports System.IO
+Imports System.Timers
 
 Public Class frmMain
 
     Inherits Form
 
-    Dim recentDT(4) As Single
-    Dim recentTF(4) As Single
-    Dim recentDiff(4) As Single
+    Dim recentDT() As Single
+    Dim recentTF() As Single
+    Dim recentDiff() As Single
+
     Dim currentReading As Integer = 0
     Dim totalReadings As Integer = 0
 
@@ -22,22 +25,22 @@ Public Class frmMain
 
     Dim testMode As Boolean
 
-    Private Sub btn_Test_Click(sender As Object, e As EventArgs)
-        Dim r As Random = New Random
-        Dim randomDT As Single = r.Next(39500, 41000) / 10000
-        Dim randomTF As Single = r.Next(38000, 39500) / 10000
-        updateData(randomDT, randomTF)
-    End Sub
-
     Sub updateData(driftTube As Single, trapFunnel As Single)
+
+        If _continue = False Then
+            Exit Sub
+        End If
+
+        Dim numDataPoints = num_DataPoints.Value
         Dim differential As Single = driftTube - trapFunnel
         lbl_DTPressure.Text = Format(driftTube, "0.0000")
         lbl_TFPressure.Text = Format(trapFunnel, "0.0000")
         lbl_DeltaPressure.Text = Format(differential, "0.0000")
+        dgv_Data.Rows.Add()
         recentDT(currentReading) = driftTube
         recentTF(currentReading) = trapFunnel
         recentDiff(currentReading) = differential
-        If totalReadings = 4 Then
+        If totalReadings = numDataPoints - 1 Then
             lbl_RangeDiff.Visible = True
             lbl_RangeDT.Visible = True
             lbl_RangeTF.Visible = True
@@ -54,14 +57,58 @@ Public Class frmMain
             totalReadings += 1
         End If
 
-        If totalReadings >= 4 Then
-            lbl_RangeDT.Text = Format((recentDT.Max() - recentDT.Min()) * 500, "0")
-            lbl_RangeTF.Text = Format((recentTF.Max() - recentTF.Min()) * 500, "0")
-            lbl_RangeDiff.Text = Format((recentDiff.Max() - recentDiff.Min()) * 500, "0")
+        Dim _doNotContinueUpdate As Boolean
+
+        For i = 0 To numDataPoints - 1
+            If recentDT(i) = 0 Or recentTF(i) = 0 Or recentDiff(0) Then
+                _doNotContinueUpdate = True
+            End If
+        Next
+
+        If totalReadings >= numDataPoints - 1 And _doNotContinueUpdate = False Then
 
             lbl_DT_RSD.Text = Format(calcRSD(recentDT), "0.00")
             lbl_TF_RSD.Text = Format(calcRSD(recentTF), "0.00")
             lbl_Delta_RSD.Text = Format(calcRSD(recentDiff), "0.00")
+
+            'IF USING RANGE AS THE STAT THEN THIS TO BE USED
+
+            'lbl_RangeDT.Text = Format((recentDT.Max() - recentDT.Min()) * 500, "0")
+            'lbl_RangeTF.Text = Format((recentTF.Max() - recentTF.Min()) * 500, "0")
+            'lbl_RangeDiff.Text = Format((recentDiff.Max() - recentDiff.Min()) * 500, "0")
+
+            'Select Case (recentDiff.Max() - recentDiff.Min()) * 500
+            '    Case <= 5
+            '        lbl_RangeDiff.ForeColor = Color.LightGreen
+            '    Case <= 10
+            '        lbl_RangeDiff.ForeColor = Color.Orange
+            '    Case > 10
+            '        lbl_RangeDiff.ForeColor = Color.Red
+            'End Select
+
+            'Select Case (recentDT.Max() - recentDT.Min()) * 500
+            '    Case <= 5
+            '        lbl_RangeDT.ForeColor = Color.LightGreen
+            '    Case <= 10
+            '        lbl_RangeDT.ForeColor = Color.Orange
+            '    Case > 10
+            '        lbl_RangeDT.ForeColor = Color.Red
+            'End Select
+
+            'Select Case (recentTF.Max() - recentTF.Min()) * 500
+            '    Case <= 5
+            '        lbl_RangeTF.ForeColor = Color.LightGreen
+            '    Case <= 10
+            '        lbl_RangeTF.ForeColor = Color.Orange
+            '    Case > 10
+            '        lbl_RangeTF.ForeColor = Color.Red
+            'End Select
+
+            'IF USING RSD AS THE STAT THEN THIS TO BE USED
+
+            lbl_RangeDT.Text = Format(calcStandardDeviation(recentDT) * 1000, "0")
+            lbl_RangeTF.Text = Format(calcStandardDeviation(recentTF) * 1000, "0")
+            lbl_RangeDiff.Text = Format(calcStandardDeviation(recentDiff) * 1000, "0")
 
             Select Case (recentDiff.Max() - recentDiff.Min()) * 500
                 Case <= 5
@@ -93,7 +140,7 @@ Public Class frmMain
 
         End If
 
-        If currentReading = 4 Then
+        If currentReading = numDataPoints - 1 Then
             currentReading = 0
         Else
             currentReading += 1
@@ -112,7 +159,6 @@ Public Class frmMain
                     If incoming Is Nothing Then
                         Exit Do
                     Else
-                        'Debug.Print(incoming.ToString)
                         Me.Invoke(Sub() parseData(incoming.ToString))
                     End If
                 Else
@@ -128,15 +174,25 @@ Public Class frmMain
 
     Private Sub btn_Connection_Click(sender As Object, e As EventArgs) Handles btn_Connection.Click
 
+        ReDim recentDT(num_DataPoints.Value - 1)
+        ReDim recentTF(num_DataPoints.Value - 1)
+        ReDim recentDiff(num_DataPoints.Value - 1)
+
         If _continue = False And comboBox_SerialPorts.Text <> "" Then
             _continue = True
+            currentReading = 0
+            totalReadings = 0
             serialPort = comboBox_SerialPorts.Text
             theThread = New Threading.Thread(AddressOf readCOMData)
             theThread.Start()
             btn_Connection.Text = "Disconnect"
+            num_DataPoints.Enabled = False
+            lbl_DataPoints.Enabled = False
         Else
             _continue = False
             btn_Connection.Text = "Connect"
+            num_DataPoints.Enabled = True
+            lbl_DataPoints.Enabled = True
         End If
 
     End Sub
@@ -149,8 +205,6 @@ Public Class frmMain
             parsedTF = Convert.ToSingle(temp)
             temp = readLine.Substring(readLine.IndexOf("2: ") + 3, 6)
             parsedDT = Convert.ToSingle(temp)
-            Debug.Print(parsedTF)
-            Debug.Print(parsedDT)
             updateData(parsedDT, parsedTF)
             txtBox_Hyperterminal.AppendText(readLine & vbCrLf)
         End If
@@ -172,12 +226,22 @@ Public Class frmMain
 
     Function calcStandardDeviation(ByVal ParamArray args() As Single) As Single
         Dim average As Single = args.Average()
+        Debug.Print("Values:")
+        For i = 0 To args.Length - 1
+            Debug.Print(args(i).ToString)
+        Next
+        Debug.Print("Squared Differences")
         Dim squaredDifferences(args.Length - 1) As Single
         For i = 0 To args.Length - 1
             squaredDifferences(i) = (args(i) - average) ^ 2
+            Debug.Print(squaredDifferences(i).ToString)
         Next
-        Dim averageSquaredDifferences As Single = squaredDifferences.Average()
+        Debug.Print("Average - 1 Square Difference")
+        Dim averageSquaredDifferences As Single = squaredDifferences.Sum() / (squaredDifferences.Length - 1)
+        Debug.Print(averageSquaredDifferences)
+        Debug.Print("Square root of Average Squared Differences")
         Dim stdDev As Single = Math.Sqrt(averageSquaredDifferences)
+        Debug.Print(stdDev)
         Return stdDev
     End Function
 
