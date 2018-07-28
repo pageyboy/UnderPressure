@@ -22,13 +22,13 @@ Partial Class frmMain
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Dim ChartArea1 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
-        Dim Legend1 As System.Windows.Forms.DataVisualization.Charting.Legend = New System.Windows.Forms.DataVisualization.Charting.Legend()
-        Dim Series1 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
+        Dim ChartArea2 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
+        Dim Legend2 As System.Windows.Forms.DataVisualization.Charting.Legend = New System.Windows.Forms.DataVisualization.Charting.Legend()
+        Dim Series2 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
         Me.btn_Connection = New System.Windows.Forms.Button()
         Me.TabControl1 = New System.Windows.Forms.TabControl()
         Me.TabPage1 = New System.Windows.Forms.TabPage()
-        Me.Chart1 = New System.Windows.Forms.DataVisualization.Charting.Chart()
+        Me.chart_Data = New System.Windows.Forms.DataVisualization.Charting.Chart()
         Me.TabPage2 = New System.Windows.Forms.TabPage()
         Me.dgv_Data = New System.Windows.Forms.DataGridView()
         Me.TimeDate = New System.Windows.Forms.DataGridViewTextBoxColumn()
@@ -51,8 +51,8 @@ Partial Class frmMain
         Me.lbl_TF_RSD = New System.Windows.Forms.Label()
         Me.lbl_mTorr = New System.Windows.Forms.Label()
         Me.lbl_RangeDiff = New System.Windows.Forms.Label()
-        Me.lbl_RangeDT = New System.Windows.Forms.Label()
-        Me.lbl_RangeTF = New System.Windows.Forms.Label()
+        Me.lbl_SDDT = New System.Windows.Forms.Label()
+        Me.lbl_SDTF = New System.Windows.Forms.Label()
         Me.lbl_PlusMinus = New System.Windows.Forms.Label()
         Me.Label5 = New System.Windows.Forms.Label()
         Me.lbl_DeltaPressure = New System.Windows.Forms.Label()
@@ -61,23 +61,24 @@ Partial Class frmMain
         Me.Label3 = New System.Windows.Forms.Label()
         Me.lbl_DTPressure = New System.Windows.Forms.Label()
         Me.TabPage5 = New System.Windows.Forms.TabPage()
-        Me.lbl_dtRSDSetpoint = New System.Windows.Forms.Label()
-        Me.lbl_tfRSDSetpoint = New System.Windows.Forms.Label()
+        Me.Label4 = New System.Windows.Forms.Label()
+        Me.lbl_dtSDSetpoint = New System.Windows.Forms.Label()
+        Me.lbl_tfSDSetpoint = New System.Windows.Forms.Label()
         Me.lbl_DiffSetpoint = New System.Windows.Forms.Label()
         Me.txtBox_tfRSDSetpoint = New System.Windows.Forms.TextBox()
         Me.txtBox_dtRSDSetpoint = New System.Windows.Forms.TextBox()
         Me.txtBox_tfSetpoint = New System.Windows.Forms.TextBox()
         Me.txtBox_dtSetpoint = New System.Windows.Forms.TextBox()
-        Me.Label4 = New System.Windows.Forms.Label()
         Me.Label9 = New System.Windows.Forms.Label()
         Me.Label13 = New System.Windows.Forms.Label()
         Me.Label14 = New System.Windows.Forms.Label()
         Me.Label16 = New System.Windows.Forms.Label()
         Me.Label18 = New System.Windows.Forms.Label()
         Me.lbl_SecsConverter = New System.Windows.Forms.Label()
+        Me.chkBox_LeakTest = New System.Windows.Forms.CheckBox()
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
-        CType(Me.Chart1, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.chart_Data, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabPage2.SuspendLayout()
         CType(Me.dgv_Data, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabPage3.SuspendLayout()
@@ -105,36 +106,36 @@ Partial Class frmMain
         Me.TabControl1.Location = New System.Drawing.Point(12, 454)
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
-        Me.TabControl1.Size = New System.Drawing.Size(1367, 274)
+        Me.TabControl1.Size = New System.Drawing.Size(1393, 274)
         Me.TabControl1.TabIndex = 11
         '
         'TabPage1
         '
-        Me.TabPage1.Controls.Add(Me.Chart1)
+        Me.TabPage1.Controls.Add(Me.chart_Data)
         Me.TabPage1.Location = New System.Drawing.Point(4, 22)
         Me.TabPage1.Name = "TabPage1"
         Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage1.Size = New System.Drawing.Size(1359, 248)
+        Me.TabPage1.Size = New System.Drawing.Size(1385, 248)
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "Graphical"
         Me.TabPage1.UseVisualStyleBackColor = True
         '
-        'Chart1
+        'chart_Data
         '
-        ChartArea1.Name = "ChartArea1"
-        Me.Chart1.ChartAreas.Add(ChartArea1)
-        Me.Chart1.Dock = System.Windows.Forms.DockStyle.Fill
-        Legend1.Name = "Legend1"
-        Me.Chart1.Legends.Add(Legend1)
-        Me.Chart1.Location = New System.Drawing.Point(3, 3)
-        Me.Chart1.Name = "Chart1"
-        Series1.ChartArea = "ChartArea1"
-        Series1.Legend = "Legend1"
-        Series1.Name = "Series1"
-        Me.Chart1.Series.Add(Series1)
-        Me.Chart1.Size = New System.Drawing.Size(1353, 242)
-        Me.Chart1.TabIndex = 0
-        Me.Chart1.Text = "Chart1"
+        ChartArea2.Name = "ChartArea1"
+        Me.chart_Data.ChartAreas.Add(ChartArea2)
+        Me.chart_Data.Dock = System.Windows.Forms.DockStyle.Fill
+        Legend2.Name = "Legend1"
+        Me.chart_Data.Legends.Add(Legend2)
+        Me.chart_Data.Location = New System.Drawing.Point(3, 3)
+        Me.chart_Data.Name = "chart_Data"
+        Series2.ChartArea = "ChartArea1"
+        Series2.Legend = "Legend1"
+        Series2.Name = "Series1"
+        Me.chart_Data.Series.Add(Series2)
+        Me.chart_Data.Size = New System.Drawing.Size(1379, 242)
+        Me.chart_Data.TabIndex = 0
+        Me.chart_Data.Text = "Chart1"
         '
         'TabPage2
         '
@@ -142,7 +143,7 @@ Partial Class frmMain
         Me.TabPage2.Location = New System.Drawing.Point(4, 22)
         Me.TabPage2.Name = "TabPage2"
         Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage2.Size = New System.Drawing.Size(1359, 248)
+        Me.TabPage2.Size = New System.Drawing.Size(1385, 248)
         Me.TabPage2.TabIndex = 1
         Me.TabPage2.Text = "Data"
         Me.TabPage2.UseVisualStyleBackColor = True
@@ -158,7 +159,7 @@ Partial Class frmMain
         Me.dgv_Data.Location = New System.Drawing.Point(3, 3)
         Me.dgv_Data.Name = "dgv_Data"
         Me.dgv_Data.ReadOnly = True
-        Me.dgv_Data.Size = New System.Drawing.Size(1353, 242)
+        Me.dgv_Data.Size = New System.Drawing.Size(1379, 242)
         Me.dgv_Data.TabIndex = 0
         '
         'TimeDate
@@ -166,13 +167,14 @@ Partial Class frmMain
         Me.TimeDate.HeaderText = "Date & Time"
         Me.TimeDate.Name = "TimeDate"
         Me.TimeDate.ReadOnly = True
+        Me.TimeDate.Width = 200
         '
         'mSecs
         '
         Me.mSecs.HeaderText = "Time Since Program Start (mSeconds)"
         Me.mSecs.Name = "mSecs"
         Me.mSecs.ReadOnly = True
-        Me.mSecs.Width = 200
+        Me.mSecs.Width = 150
         '
         'DataPointsSinceConnection
         '
@@ -204,7 +206,7 @@ Partial Class frmMain
         Me.TabPage3.Location = New System.Drawing.Point(4, 22)
         Me.TabPage3.Name = "TabPage3"
         Me.TabPage3.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage3.Size = New System.Drawing.Size(1359, 248)
+        Me.TabPage3.Size = New System.Drawing.Size(1385, 248)
         Me.TabPage3.TabIndex = 2
         Me.TabPage3.Text = "Hyperterminal"
         Me.TabPage3.UseVisualStyleBackColor = True
@@ -216,7 +218,7 @@ Partial Class frmMain
         Me.txtBox_Hyperterminal.Multiline = True
         Me.txtBox_Hyperterminal.Name = "txtBox_Hyperterminal"
         Me.txtBox_Hyperterminal.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-        Me.txtBox_Hyperterminal.Size = New System.Drawing.Size(1353, 242)
+        Me.txtBox_Hyperterminal.Size = New System.Drawing.Size(1379, 242)
         Me.txtBox_Hyperterminal.TabIndex = 0
         '
         'comboBox_SerialPorts
@@ -241,7 +243,7 @@ Partial Class frmMain
         'num_DataPoints
         '
         Me.num_DataPoints.Font = New System.Drawing.Font("Arial monospaced for SAP", 26.25!)
-        Me.num_DataPoints.Location = New System.Drawing.Point(925, 13)
+        Me.num_DataPoints.Location = New System.Drawing.Point(770, 12)
         Me.num_DataPoints.Maximum = New Decimal(New Integer() {1500, 0, 0, 0})
         Me.num_DataPoints.Minimum = New Decimal(New Integer() {25, 0, 0, 0})
         Me.num_DataPoints.Name = "num_DataPoints"
@@ -253,7 +255,7 @@ Partial Class frmMain
         '
         Me.lbl_DataPoints.AutoSize = True
         Me.lbl_DataPoints.Font = New System.Drawing.Font("Arial monospaced for SAP", 15.0!)
-        Me.lbl_DataPoints.Location = New System.Drawing.Point(617, 24)
+        Me.lbl_DataPoints.Location = New System.Drawing.Point(462, 23)
         Me.lbl_DataPoints.Name = "lbl_DataPoints"
         Me.lbl_DataPoints.Size = New System.Drawing.Size(298, 23)
         Me.lbl_DataPoints.TabIndex = 25
@@ -266,7 +268,7 @@ Partial Class frmMain
         Me.TabControl2.Location = New System.Drawing.Point(12, 67)
         Me.TabControl2.Name = "TabControl2"
         Me.TabControl2.SelectedIndex = 0
-        Me.TabControl2.Size = New System.Drawing.Size(1363, 381)
+        Me.TabControl2.Size = New System.Drawing.Size(1397, 381)
         Me.TabControl2.TabIndex = 26
         '
         'TabPage4
@@ -278,8 +280,8 @@ Partial Class frmMain
         Me.TabPage4.Controls.Add(Me.lbl_TF_RSD)
         Me.TabPage4.Controls.Add(Me.lbl_mTorr)
         Me.TabPage4.Controls.Add(Me.lbl_RangeDiff)
-        Me.TabPage4.Controls.Add(Me.lbl_RangeDT)
-        Me.TabPage4.Controls.Add(Me.lbl_RangeTF)
+        Me.TabPage4.Controls.Add(Me.lbl_SDDT)
+        Me.TabPage4.Controls.Add(Me.lbl_SDTF)
         Me.TabPage4.Controls.Add(Me.lbl_PlusMinus)
         Me.TabPage4.Controls.Add(Me.Label5)
         Me.TabPage4.Controls.Add(Me.lbl_DeltaPressure)
@@ -290,7 +292,7 @@ Partial Class frmMain
         Me.TabPage4.Location = New System.Drawing.Point(4, 22)
         Me.TabPage4.Name = "TabPage4"
         Me.TabPage4.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage4.Size = New System.Drawing.Size(1355, 355)
+        Me.TabPage4.Size = New System.Drawing.Size(1389, 355)
         Me.TabPage4.TabIndex = 0
         Me.TabPage4.Text = "Measure"
         '
@@ -298,7 +300,7 @@ Partial Class frmMain
         '
         Me.lbl_PercentSign.AutoSize = True
         Me.lbl_PercentSign.Font = New System.Drawing.Font("Arial monospaced for SAP", 26.25!)
-        Me.lbl_PercentSign.Location = New System.Drawing.Point(1308, 157)
+        Me.lbl_PercentSign.Location = New System.Drawing.Point(1334, 157)
         Me.lbl_PercentSign.Name = "lbl_PercentSign"
         Me.lbl_PercentSign.Size = New System.Drawing.Size(38, 40)
         Me.lbl_PercentSign.TabIndex = 55
@@ -360,27 +362,27 @@ Partial Class frmMain
         Me.lbl_RangeDiff.Text = "2.7"
         Me.lbl_RangeDiff.Visible = False
         '
-        'lbl_RangeDT
+        'lbl_SDDT
         '
-        Me.lbl_RangeDT.AutoSize = True
-        Me.lbl_RangeDT.Font = New System.Drawing.Font("Arial monospaced for SAP", 63.75!)
-        Me.lbl_RangeDT.Location = New System.Drawing.Point(749, 18)
-        Me.lbl_RangeDT.Name = "lbl_RangeDT"
-        Me.lbl_RangeDT.Size = New System.Drawing.Size(195, 98)
-        Me.lbl_RangeDT.TabIndex = 49
-        Me.lbl_RangeDT.Text = "1.2"
-        Me.lbl_RangeDT.Visible = False
+        Me.lbl_SDDT.AutoSize = True
+        Me.lbl_SDDT.Font = New System.Drawing.Font("Arial monospaced for SAP", 63.75!)
+        Me.lbl_SDDT.Location = New System.Drawing.Point(749, 18)
+        Me.lbl_SDDT.Name = "lbl_SDDT"
+        Me.lbl_SDDT.Size = New System.Drawing.Size(195, 98)
+        Me.lbl_SDDT.TabIndex = 49
+        Me.lbl_SDDT.Text = "1.2"
+        Me.lbl_SDDT.Visible = False
         '
-        'lbl_RangeTF
+        'lbl_SDTF
         '
-        Me.lbl_RangeTF.AutoSize = True
-        Me.lbl_RangeTF.Font = New System.Drawing.Font("Arial monospaced for SAP", 63.75!)
-        Me.lbl_RangeTF.Location = New System.Drawing.Point(749, 128)
-        Me.lbl_RangeTF.Name = "lbl_RangeTF"
-        Me.lbl_RangeTF.Size = New System.Drawing.Size(195, 98)
-        Me.lbl_RangeTF.TabIndex = 48
-        Me.lbl_RangeTF.Text = "1.1"
-        Me.lbl_RangeTF.Visible = False
+        Me.lbl_SDTF.AutoSize = True
+        Me.lbl_SDTF.Font = New System.Drawing.Font("Arial monospaced for SAP", 63.75!)
+        Me.lbl_SDTF.Location = New System.Drawing.Point(749, 128)
+        Me.lbl_SDTF.Name = "lbl_SDTF"
+        Me.lbl_SDTF.Size = New System.Drawing.Size(195, 98)
+        Me.lbl_SDTF.TabIndex = 48
+        Me.lbl_SDTF.Text = "1.1"
+        Me.lbl_SDTF.Visible = False
         '
         'lbl_PlusMinus
         '
@@ -455,14 +457,14 @@ Partial Class frmMain
         'TabPage5
         '
         Me.TabPage5.BackColor = System.Drawing.SystemColors.Control
-        Me.TabPage5.Controls.Add(Me.lbl_dtRSDSetpoint)
-        Me.TabPage5.Controls.Add(Me.lbl_tfRSDSetpoint)
+        Me.TabPage5.Controls.Add(Me.Label4)
+        Me.TabPage5.Controls.Add(Me.lbl_dtSDSetpoint)
+        Me.TabPage5.Controls.Add(Me.lbl_tfSDSetpoint)
         Me.TabPage5.Controls.Add(Me.lbl_DiffSetpoint)
         Me.TabPage5.Controls.Add(Me.txtBox_tfRSDSetpoint)
         Me.TabPage5.Controls.Add(Me.txtBox_dtRSDSetpoint)
         Me.TabPage5.Controls.Add(Me.txtBox_tfSetpoint)
         Me.TabPage5.Controls.Add(Me.txtBox_dtSetpoint)
-        Me.TabPage5.Controls.Add(Me.Label4)
         Me.TabPage5.Controls.Add(Me.Label9)
         Me.TabPage5.Controls.Add(Me.Label13)
         Me.TabPage5.Controls.Add(Me.Label14)
@@ -471,29 +473,39 @@ Partial Class frmMain
         Me.TabPage5.Location = New System.Drawing.Point(4, 22)
         Me.TabPage5.Name = "TabPage5"
         Me.TabPage5.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage5.Size = New System.Drawing.Size(1355, 355)
+        Me.TabPage5.Size = New System.Drawing.Size(1389, 355)
         Me.TabPage5.TabIndex = 1
         Me.TabPage5.Text = "Setpoints"
         '
-        'lbl_dtRSDSetpoint
+        'Label4
         '
-        Me.lbl_dtRSDSetpoint.AutoSize = True
-        Me.lbl_dtRSDSetpoint.Font = New System.Drawing.Font("Arial monospaced for SAP", 63.75!)
-        Me.lbl_dtRSDSetpoint.Location = New System.Drawing.Point(749, 18)
-        Me.lbl_dtRSDSetpoint.Name = "lbl_dtRSDSetpoint"
-        Me.lbl_dtRSDSetpoint.Size = New System.Drawing.Size(195, 98)
-        Me.lbl_dtRSDSetpoint.TabIndex = 66
-        Me.lbl_dtRSDSetpoint.Text = "1.2"
+        Me.Label4.AutoSize = True
+        Me.Label4.Font = New System.Drawing.Font("Arial monospaced for SAP", 26.25!)
+        Me.Label4.Location = New System.Drawing.Point(1334, 157)
+        Me.Label4.Name = "Label4"
+        Me.Label4.Size = New System.Drawing.Size(38, 40)
+        Me.Label4.TabIndex = 55
+        Me.Label4.Text = "%"
         '
-        'lbl_tfRSDSetpoint
+        'lbl_dtSDSetpoint
         '
-        Me.lbl_tfRSDSetpoint.AutoSize = True
-        Me.lbl_tfRSDSetpoint.Font = New System.Drawing.Font("Arial monospaced for SAP", 63.75!)
-        Me.lbl_tfRSDSetpoint.Location = New System.Drawing.Point(749, 128)
-        Me.lbl_tfRSDSetpoint.Name = "lbl_tfRSDSetpoint"
-        Me.lbl_tfRSDSetpoint.Size = New System.Drawing.Size(195, 98)
-        Me.lbl_tfRSDSetpoint.TabIndex = 65
-        Me.lbl_tfRSDSetpoint.Text = "1.1"
+        Me.lbl_dtSDSetpoint.AutoSize = True
+        Me.lbl_dtSDSetpoint.Font = New System.Drawing.Font("Arial monospaced for SAP", 63.75!)
+        Me.lbl_dtSDSetpoint.Location = New System.Drawing.Point(749, 18)
+        Me.lbl_dtSDSetpoint.Name = "lbl_dtSDSetpoint"
+        Me.lbl_dtSDSetpoint.Size = New System.Drawing.Size(195, 98)
+        Me.lbl_dtSDSetpoint.TabIndex = 66
+        Me.lbl_dtSDSetpoint.Text = "1.2"
+        '
+        'lbl_tfSDSetpoint
+        '
+        Me.lbl_tfSDSetpoint.AutoSize = True
+        Me.lbl_tfSDSetpoint.Font = New System.Drawing.Font("Arial monospaced for SAP", 63.75!)
+        Me.lbl_tfSDSetpoint.Location = New System.Drawing.Point(749, 128)
+        Me.lbl_tfSDSetpoint.Name = "lbl_tfSDSetpoint"
+        Me.lbl_tfSDSetpoint.Size = New System.Drawing.Size(195, 98)
+        Me.lbl_tfSDSetpoint.TabIndex = 65
+        Me.lbl_tfSDSetpoint.Text = "1.1"
         '
         'lbl_DiffSetpoint
         '
@@ -544,17 +556,6 @@ Partial Class frmMain
         Me.txtBox_dtSetpoint.Size = New System.Drawing.Size(318, 105)
         Me.txtBox_dtSetpoint.TabIndex = 56
         Me.txtBox_dtSetpoint.Text = "3.9500"
-        '
-        'Label4
-        '
-        Me.Label4.AutoSize = True
-        Me.Label4.Font = New System.Drawing.Font("Arial monospaced for SAP", 26.25!)
-        Me.Label4.Location = New System.Drawing.Point(1308, 157)
-        Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(38, 40)
-        Me.Label4.TabIndex = 55
-        Me.Label4.Text = "%"
-        Me.Label4.Visible = False
         '
         'Label9
         '
@@ -610,11 +611,22 @@ Partial Class frmMain
         '
         Me.lbl_SecsConverter.AutoSize = True
         Me.lbl_SecsConverter.Font = New System.Drawing.Font("Arial monospaced for SAP", 15.0!)
-        Me.lbl_SecsConverter.Location = New System.Drawing.Point(1036, 24)
+        Me.lbl_SecsConverter.Location = New System.Drawing.Point(881, 23)
         Me.lbl_SecsConverter.Name = "lbl_SecsConverter"
         Me.lbl_SecsConverter.Size = New System.Drawing.Size(178, 23)
         Me.lbl_SecsConverter.TabIndex = 27
         Me.lbl_SecsConverter.Text = "Approx. 5 mins"
+        '
+        'chkBox_LeakTest
+        '
+        Me.chkBox_LeakTest.AutoSize = True
+        Me.chkBox_LeakTest.Font = New System.Drawing.Font("Arial monospaced for SAP", 15.0!)
+        Me.chkBox_LeakTest.Location = New System.Drawing.Point(1272, 22)
+        Me.chkBox_LeakTest.Name = "chkBox_LeakTest"
+        Me.chkBox_LeakTest.Size = New System.Drawing.Size(137, 27)
+        Me.chkBox_LeakTest.TabIndex = 28
+        Me.chkBox_LeakTest.Text = "Leak Test"
+        Me.chkBox_LeakTest.UseVisualStyleBackColor = True
         '
         'frmMain
         '
@@ -622,7 +634,8 @@ Partial Class frmMain
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
-        Me.ClientSize = New System.Drawing.Size(1391, 752)
+        Me.ClientSize = New System.Drawing.Size(1421, 752)
+        Me.Controls.Add(Me.chkBox_LeakTest)
         Me.Controls.Add(Me.lbl_SecsConverter)
         Me.Controls.Add(Me.TabControl2)
         Me.Controls.Add(Me.lbl_DataPoints)
@@ -636,7 +649,7 @@ Partial Class frmMain
         Me.Text = "Under Pressure - Drift Tube Pressure Monitor"
         Me.TabControl1.ResumeLayout(False)
         Me.TabPage1.ResumeLayout(False)
-        CType(Me.Chart1, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.chart_Data, System.ComponentModel.ISupportInitialize).EndInit()
         Me.TabPage2.ResumeLayout(False)
         CType(Me.dgv_Data, System.ComponentModel.ISupportInitialize).EndInit()
         Me.TabPage3.ResumeLayout(False)
@@ -655,7 +668,7 @@ Partial Class frmMain
     Friend WithEvents btn_Connection As Button
     Friend WithEvents TabControl1 As TabControl
     Friend WithEvents TabPage1 As TabPage
-    Friend WithEvents Chart1 As DataVisualization.Charting.Chart
+    Friend WithEvents chart_Data As DataVisualization.Charting.Chart
     Friend WithEvents TabPage2 As TabPage
     Friend WithEvents dgv_Data As DataGridView
     Friend WithEvents comboBox_SerialPorts As ComboBox
@@ -672,8 +685,8 @@ Partial Class frmMain
     Friend WithEvents lbl_TF_RSD As Label
     Friend WithEvents lbl_mTorr As Label
     Friend WithEvents lbl_RangeDiff As Label
-    Friend WithEvents lbl_RangeDT As Label
-    Friend WithEvents lbl_RangeTF As Label
+    Friend WithEvents lbl_SDDT As Label
+    Friend WithEvents lbl_SDTF As Label
     Friend WithEvents lbl_PlusMinus As Label
     Friend WithEvents Label5 As Label
     Friend WithEvents lbl_DeltaPressure As Label
@@ -693,8 +706,8 @@ Partial Class frmMain
     Friend WithEvents txtBox_tfRSDSetpoint As TextBox
     Friend WithEvents txtBox_dtRSDSetpoint As TextBox
     Friend WithEvents lbl_DiffSetpoint As Label
-    Friend WithEvents lbl_dtRSDSetpoint As Label
-    Friend WithEvents lbl_tfRSDSetpoint As Label
+    Friend WithEvents lbl_dtSDSetpoint As Label
+    Friend WithEvents lbl_tfSDSetpoint As Label
     Friend WithEvents lbl_SecsConverter As Label
     Friend WithEvents TimeDate As DataGridViewTextBoxColumn
     Friend WithEvents mSecs As DataGridViewTextBoxColumn
@@ -702,4 +715,5 @@ Partial Class frmMain
     Friend WithEvents DTPressure As DataGridViewTextBoxColumn
     Friend WithEvents TFPressure As DataGridViewTextBoxColumn
     Friend WithEvents DiffPressure As DataGridViewTextBoxColumn
+    Friend WithEvents chkBox_LeakTest As CheckBox
 End Class

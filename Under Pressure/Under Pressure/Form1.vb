@@ -16,7 +16,7 @@ Public Class frmMain
 
     Dim recentDT() As Single
     Dim recentTF() As Single
-    Dim recentDiff() As Single
+    Dim recentDelta() As Single
 
     Dim currentReading As Integer = 0
     Dim totalReadings As Integer = 0
@@ -44,86 +44,150 @@ Public Class frmMain
         Dim numDataPoints = num_DataPoints.Value
 
         'Calculate differential and set label boxes as formatted value
-        Dim differential As Single = driftTube - trapFunnel
+        Dim delta As Single = driftTube - trapFunnel
         lbl_DTPressure.Text = Format(driftTube, "0.0000")
         lbl_TFPressure.Text = Format(trapFunnel, "0.0000")
-        lbl_DeltaPressure.Text = Format(differential, "0.0000")
-
-        ' Add data into DGV
-        mTime = (DateTime.UtcNow - startTime).TotalMilliseconds
-        dgv_Data.Rows.Add(DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fff tt"), mTime, totalReadings + 1, Format(driftTube, "0.0000"), Format(trapFunnel, "0.0000"), Format(differential, "0.0000"))
-        dgv_Data.AutoResizeColumns()
-        dgv_Data.FirstDisplayedScrollingRowIndex = dgv_Data.RowCount - 1
+        lbl_DeltaPressure.Text = Format(delta, "0.0000")
 
         ' Add the data into the arrays which have been sized depending on the number of data points the user is interested in
         recentDT(currentReading) = driftTube
         recentTF(currentReading) = trapFunnel
-        recentDiff(currentReading) = differential
+        recentDelta(currentReading) = delta
 
-        ' If the total number of readings that the user has requested are used for statistics have been reached then the statistics can be calculated and the labels to display these can be made visible.
-        If totalReadings >= numDataPoints - 1 Then
-            lbl_RangeDiff.Visible = True
-            lbl_RangeDT.Visible = True
-            lbl_RangeTF.Visible = True
-            lbl_PlusMinus.Text = "Torr ±"
-            lbl_mTorr.Visible = True
+        ' Add data into DGV
+        mTime = (DateTime.UtcNow - startTime).TotalMilliseconds
+        dgv_Data.Rows.Add(DateTime.Now.ToString("dd MMM yyyy hh:mm:ss.fff tt"), mTime, totalReadings + 1, Format(driftTube, "0.0000"), Format(trapFunnel, "0.0000"), Format(delta, "0.0000"))
 
-            lbl_Delta_RSD.Visible = True
-            lbl_DT_RSD.Visible = True
-            lbl_TF_RSD.Visible = True
+        ' Update chart
+        chart_Data.Series("Drift Tube Pressure").Points.AddXY(totalReadings, driftTube)
+        chart_Data.Series("Trap Funnel Pressure").Points.AddXY(totalReadings, trapFunnel)
+        chart_Data.ChartAreas(0).AxisY.Minimum = Convert.ToDouble(recentTF.Where(Function(num) num > 0).Min) - 0.15
+        chart_Data.ChartAreas(0).AxisY.Maximum = Convert.ToDouble(recentDT.Max) + 0.15
 
-            lbl_PercentSign.Visible = True
+        If chkBox_LeakTest.CheckState = False Then
+            Select Case numDataPoints
+                Case 25
+                    If totalReadings <= 150 Then
+                        chart_Data.ChartAreas(0).AxisX.Minimum = 0
+                        chart_Data.ChartAreas(0).AxisX.Maximum = totalReadings
+                    Else
+                        chart_Data.ChartAreas(0).AxisX.Minimum = totalReadings - 150
+                        chart_Data.ChartAreas(0).AxisX.Maximum = totalReadings
+                    End If
+                Case 750
+                    If totalReadings <= 750 Then
+                        chart_Data.ChartAreas(0).AxisX.Minimum = 0
+                        chart_Data.ChartAreas(0).AxisX.Maximum = totalReadings
+                    Else
+                        chart_Data.ChartAreas(0).AxisX.Minimum = totalReadings - 750
+                        chart_Data.ChartAreas(0).AxisX.Maximum = totalReadings
+                    End If
+                Case 1500
+                    If totalReadings <= 1500 Then
+                        chart_Data.ChartAreas(0).AxisX.Minimum = 0
+                        chart_Data.ChartAreas(0).AxisX.Maximum = totalReadings
+                    Else
+                        chart_Data.ChartAreas(0).AxisX.Minimum = totalReadings - 1500
+                        chart_Data.ChartAreas(0).AxisX.Maximum = totalReadings
+                    End If
+            End Select
+
+            ' If the total number of readings that the user has requested are used for statistics have been reached then the statistics can be calculated and the labels to display these can be made visible.
+            If totalReadings >= numDataPoints - 1 Then
+                lbl_RangeDiff.Visible = True
+                lbl_SDDT.Visible = True
+                lbl_SDTF.Visible = True
+                lbl_PlusMinus.Text = "Torr ±"
+                lbl_mTorr.Visible = True
+
+                lbl_Delta_RSD.Visible = True
+                lbl_DT_RSD.Visible = True
+                lbl_TF_RSD.Visible = True
+
+                lbl_PercentSign.Visible = True
+            End If
+
+            ' _doNotContinueUpdate flag is used as 
+            Dim _doNotContinueUpdate As Boolean
+            Dim zeroDT As Integer = Array.FindIndex(recentDT, Function(val) val = 0)
+
+            If zeroDT > 0 Then
+                _doNotContinueUpdate = True
+            End If
+
+            If totalReadings >= numDataPoints - 1 And _doNotContinueUpdate = False Then
+
+                Dim dtRSD As Single = Math.Round(calcRSD(recentDT), 2)
+                Dim tfRSD As Single = Math.Round(calcRSD(recentTF), 2)
+                Dim deltaRSD As Single = Math.Round(calcRSD(recentDelta), 2)
+
+                Dim dtSD As Single = Math.Round(calcStandardDeviation(recentDT) * 1000, 1)
+                Dim tfSD As Single = Math.Round(calcStandardDeviation(recentTF) * 1000, 1)
+                Dim deltaSD As Single = Math.Round(calcStandardDeviation(recentDelta) * 1000, 1)
+
+                lbl_DT_RSD.Text = Format(dtRSD, "0.00")
+                lbl_TF_RSD.Text = Format(tfRSD, "0.00")
+                lbl_Delta_RSD.Text = Format(deltaRSD, "0.00")
+
+                lbl_SDDT.Text = Format(dtSD, "0.0")
+                lbl_SDTF.Text = Format(tfSD, "0.0")
+                lbl_RangeDiff.Text = Format(deltaSD, "0.0")
+
+                Select Case dtRSD
+                    Case <= Convert.ToSingle(txtBox_dtRSDSetpoint.Text)
+                        lbl_DT_RSD.ForeColor = Color.LightGreen
+                        lbl_SDDT.ForeColor = Color.LightGreen
+                    Case <= (Convert.ToSingle(txtBox_dtRSDSetpoint.Text) * 2)
+                        lbl_DT_RSD.ForeColor = Color.Orange
+                        lbl_SDDT.ForeColor = Color.Orange
+                    Case Else
+                        lbl_DT_RSD.ForeColor = Color.Red
+                        lbl_SDDT.ForeColor = Color.Red
+                End Select
+
+                Select Case tfRSD
+                    Case <= Convert.ToSingle(txtBox_tfRSDSetpoint.Text)
+                        lbl_TF_RSD.ForeColor = Color.LightGreen
+                        lbl_SDTF.ForeColor = Color.LightGreen
+                    Case <= (Convert.ToSingle(txtBox_tfRSDSetpoint.Text) * 2)
+                        lbl_TF_RSD.ForeColor = Color.Orange
+                        lbl_SDTF.ForeColor = Color.Orange
+                    Case Else
+                        lbl_TF_RSD.ForeColor = Color.Red
+                        lbl_SDTF.ForeColor = Color.Red
+                End Select
+
+            End If
+        Else
+            If totalReadings <= 2500 Then
+                chart_Data.ChartAreas(0).AxisX.Minimum = 0
+                chart_Data.ChartAreas(0).AxisX.Maximum = totalReadings
+            Else
+                chart_Data.ChartAreas(0).AxisX.Minimum = totalReadings - 2500
+                chart_Data.ChartAreas(0).AxisX.Maximum = totalReadings
+            End If
+
+            Select Case driftTube
+                Case <= 0.05
+                    lbl_DTPressure.ForeColor = Color.LightGreen
+                Case <= 0.075
+                    lbl_DTPressure.ForeColor = Color.Orange
+                Case Else
+                    lbl_DTPressure.ForeColor = Color.Red
+            End Select
+
+            Select Case trapFunnel
+                Case <= 0.05
+                    lbl_TFPressure.ForeColor = Color.LightGreen
+                Case <= 0.075
+                    lbl_TFPressure.ForeColor = Color.Orange
+                Case Else
+                    lbl_TFPressure.ForeColor = Color.Red
+            End Select
+
         End If
 
         totalReadings += 1
-
-        ' _doNotContinueUpdate flag is used as 
-        Dim _doNotContinueUpdate As Boolean
-        Dim zeroDT As Integer = Array.FindIndex(recentDT, Function(val) val = 0)
-
-        If zeroDT > 0 Then
-            _doNotContinueUpdate = True
-        End If
-
-        If totalReadings >= numDataPoints - 1 And _doNotContinueUpdate = False Then
-
-            lbl_DT_RSD.Text = Format(calcRSD(recentDT), "0.00")
-            lbl_TF_RSD.Text = Format(calcRSD(recentTF), "0.00")
-            lbl_Delta_RSD.Text = Format(calcRSD(recentDiff), "0.00")
-
-            lbl_RangeDT.Text = Format(calcStandardDeviation(recentDT) * 1000, "0.0")
-            lbl_RangeTF.Text = Format(calcStandardDeviation(recentTF) * 1000, "0.0")
-            lbl_RangeDiff.Text = Format(calcStandardDeviation(recentDiff) * 1000, "0.0")
-
-            Select Case (recentDiff.Max() - recentDiff.Min()) * 500
-                Case <= 5
-                    lbl_RangeDiff.ForeColor = Color.LightGreen
-                Case <= 10
-                    lbl_RangeDiff.ForeColor = Color.Orange
-                Case > 10
-                    lbl_RangeDiff.ForeColor = Color.Red
-            End Select
-
-            Select Case (recentDT.Max() - recentDT.Min()) * 500
-                Case <= 5
-                    lbl_RangeDT.ForeColor = Color.LightGreen
-                Case <= 10
-                    lbl_RangeDT.ForeColor = Color.Orange
-                Case > 10
-                    lbl_RangeDT.ForeColor = Color.Red
-            End Select
-
-            Select Case (recentTF.Max() - recentTF.Min()) * 500
-                Case <= 5
-                    lbl_RangeTF.ForeColor = Color.LightGreen
-                Case <= 10
-                    lbl_RangeTF.ForeColor = Color.Orange
-                Case > 10
-                    lbl_RangeTF.ForeColor = Color.Red
-            End Select
-
-
-        End If
 
         If currentReading = numDataPoints - 1 Then
             currentReading = 0
@@ -162,7 +226,34 @@ Public Class frmMain
         If _continue = False And comboBox_SerialPorts.Text <> "" Then
             ReDim recentDT(num_DataPoints.Value - 1)
             ReDim recentTF(num_DataPoints.Value - 1)
-            ReDim recentDiff(num_DataPoints.Value - 1)
+            ReDim recentDelta(num_DataPoints.Value - 1)
+
+            ' Chart setup
+
+            With chart_Data.Series
+                .Clear()
+                .Add("Drift Tube Pressure")
+                .Add("Trap Funnel Pressure")
+            End With
+
+            With chart_Data.Series("Drift Tube Pressure")
+                .ChartType = DataVisualization.Charting.SeriesChartType.FastLine
+                .BorderWidth = 3
+            End With
+
+            With chart_Data.Series("Trap Funnel Pressure")
+                .ChartType = DataVisualization.Charting.SeriesChartType.FastLine
+                .BorderWidth = 3
+            End With
+
+            With chart_Data.ChartAreas(0)
+                .AxisY.LabelStyle.Format = "#.#"
+                .AxisX.LabelStyle.Format = "#"
+                .AxisY.Interval = 0.1
+                .AxisX.MajorGrid.LineDashStyle = DataVisualization.Charting.ChartDashStyle.NotSet
+                .AxisY.MajorGrid.LineDashStyle = DataVisualization.Charting.ChartDashStyle.Dash
+            End With
+
             _continue = True
             currentReading = 0
             totalReadings = 0
@@ -249,7 +340,7 @@ Public Class frmMain
 
     Dim num_DataPointsPrevValue = 25
 
-    Private Sub num_DataPoints_ValueChanged(sender As Object, e As EventArgs) Handles num_DataPoints.ValueChanged 
+    Private Sub num_DataPoints_ValueChanged(sender As Object, e As EventArgs) Handles num_DataPoints.ValueChanged
         If num_DataPoints.Value > num_DataPointsPrevValue Then
             Select Case num_DataPointsPrevValue
                 Case 25
