@@ -8,8 +8,8 @@ void setup() {
 void loop() {
   // put your main code here, to run repeatedly:
 
-  float dtPressure = (float)random(39500, 41000) / 10000;
-  float tfPressure = (float)random(38000, 39500) / 10000;
+  float dtPressure = (float)random(39428, 39515) / 10000;
+  float tfPressure = (float)random(37887, 38056) / 10000;
   Serial.println("CON>1: " + String(tfPressure, 4) + " 0x50 2: " + String(dtPressure, 4) + " 0x00");
   delay(400);
 }
