@@ -27,8 +27,9 @@ Public Class frmMain
     Dim tfRSDSetpoint As Single
 
     Dim theThread As System.Threading.Thread
-    Dim selectedPort As IO.Ports.SerialPort = Nothing
+    Dim selectedPort As New IO.Ports.SerialPort
     Dim _continue As Boolean = False
+    Dim _everConnected As Boolean = False
     Dim serialPort As String
 
     Dim testMode As Boolean
@@ -94,9 +95,9 @@ Public Class frmMain
 
             ' If the total number of readings that the user has requested are used for statistics have been reached then the statistics can be calculated and the labels to display these can be made visible.
             If totalReadings >= numDataPoints - 1 Then
-                lbl_RangeDiff.Visible = True
-                lbl_SDDT.Visible = True
-                lbl_SDTF.Visible = True
+                lbl_Delta_SD.Visible = True
+                lbl_DT_SD.Visible = True
+                lbl_TF_SD.Visible = True
                 lbl_PlusMinus.Text = "Torr ±"
                 lbl_mTorr.Visible = True
 
@@ -129,32 +130,35 @@ Public Class frmMain
                 lbl_TF_RSD.Text = Format(tfRSD, "0.00")
                 lbl_Delta_RSD.Text = Format(deltaRSD, "0.00")
 
-                lbl_SDDT.Text = Format(dtSD, "0.0")
-                lbl_SDTF.Text = Format(tfSD, "0.0")
-                lbl_RangeDiff.Text = Format(deltaSD, "0.0")
+                lbl_DT_SD.Text = Format(dtSD, "0.0")
+                lbl_TF_SD.Text = Format(tfSD, "0.0")
+                lbl_Delta_SD.Text = Format(deltaSD, "0.0")
+
+                Dim dtRSDSetpoint As Single = Convert.ToSingle(txtBox_DT_RSD_Setpoint.Text)
+                Dim tfRSDSetpoint As Single = Convert.ToSingle(txtBox_TF_RSD_Setpoint.Text)
 
                 Select Case dtRSD
-                    Case <= Convert.ToSingle(txtBox_dtRSDSetpoint.Text)
+                    Case <= dtRSDSetpoint
                         lbl_DT_RSD.ForeColor = Color.LightGreen
-                        lbl_SDDT.ForeColor = Color.LightGreen
-                    Case <= (Convert.ToSingle(txtBox_dtRSDSetpoint.Text) * 2)
+                        lbl_DT_SD.ForeColor = Color.LightGreen
+                    Case <= dtRSDSetpoint * 2
                         lbl_DT_RSD.ForeColor = Color.Orange
-                        lbl_SDDT.ForeColor = Color.Orange
+                        lbl_DT_SD.ForeColor = Color.Orange
                     Case Else
                         lbl_DT_RSD.ForeColor = Color.Red
-                        lbl_SDDT.ForeColor = Color.Red
+                        lbl_DT_SD.ForeColor = Color.Red
                 End Select
 
                 Select Case tfRSD
-                    Case <= Convert.ToSingle(txtBox_tfRSDSetpoint.Text)
+                    Case <= tfRSDSetpoint
                         lbl_TF_RSD.ForeColor = Color.LightGreen
-                        lbl_SDTF.ForeColor = Color.LightGreen
-                    Case <= (Convert.ToSingle(txtBox_tfRSDSetpoint.Text) * 2)
+                        lbl_TF_SD.ForeColor = Color.LightGreen
+                    Case <= tfRSDSetpoint * 2
                         lbl_TF_RSD.ForeColor = Color.Orange
-                        lbl_SDTF.ForeColor = Color.Orange
+                        lbl_TF_SD.ForeColor = Color.Orange
                     Case Else
                         lbl_TF_RSD.ForeColor = Color.Red
-                        lbl_SDTF.ForeColor = Color.Red
+                        lbl_TF_SD.ForeColor = Color.Red
                 End Select
 
             End If
@@ -201,10 +205,20 @@ Public Class frmMain
         Try
             selectedPort = My.Computer.Ports.OpenSerialPort(serialPort, 19200, Parity.None, 8, StopBits.One)
             selectedPort.ReadTimeout = 10000
-            selectedPort.WriteLine("RCN")
+            AddHandler selectedPort.DataReceived, AddressOf DataReceivedHandler
+            Dim incoming As String = selectedPort.ReadLine()
+            If incoming IsNot Nothing Then
+                _everConnected = True
+            End If
+
+            'Dim Output As String
+            'Output = Chr(27)
+            'selectedPort.WriteLine(Output)
+
+
             Do
                 If _continue = True Then
-                    Dim incoming As String = selectedPort.ReadLine()
+                    incoming = selectedPort.ReadLine()
                     If incoming Is Nothing Then
                         Exit Do
                     Else
@@ -216,8 +230,23 @@ Public Class frmMain
                 End If
             Loop
         Catch ex As TimeoutException
-            MessageBox.Show("Serial Port lost or not detected")
+            If _everConnected Then
+                MessageBox.Show(Me, "Lost connection to IMQTOF on " & serialPort, "Error with Connection", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Else
+                MessageBox.Show(Me, "Unabled to connect to IMQTOF on " & serialPort, "Error with Connection", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            End If
+            Me.Invoke(Sub() DisconnectIM())
+        Catch ex As Exception
         End Try
+
+    End Sub
+
+    Public Sub DataReceivedHandler(sender As Object,
+                        e As SerialDataReceivedEventArgs)
+
+        Dim sp As SerialPort = CType(sender, SerialPort)
+        Dim indata As String = sp.ReadExisting()
+        Me.Invoke(Sub() parseData(indata.ToString))
 
     End Sub
 
@@ -227,6 +256,16 @@ Public Class frmMain
             ReDim recentDT(num_DataPoints.Value - 1)
             ReDim recentTF(num_DataPoints.Value - 1)
             ReDim recentDelta(num_DataPoints.Value - 1)
+
+            lbl_DT_RSD.Visible = False
+            lbl_TF_RSD.Visible = False
+            lbl_PercentSign.Visible = False
+            lbl_mTorr.Visible = False
+            lbl_Delta_RSD.Visible = False
+            lbl_Delta_SD.Visible = False
+            lbl_DT_SD.Visible = False
+            lbl_TF_SD.Visible = False
+            lbl_PlusMinus.Text = "Torr"
 
             ' Chart setup
 
@@ -247,14 +286,15 @@ Public Class frmMain
             End With
 
             With chart_Data.ChartAreas(0)
-                .AxisY.LabelStyle.Format = "#.#"
-                .AxisX.LabelStyle.Format = "#"
-                .AxisY.Interval = 0.1
+                .AxisY.LabelStyle.Format = "0.0"
+                .AxisX.LabelStyle.Format = "0"
+                '.AxisY.Interval = 0.1
                 .AxisX.MajorGrid.LineDashStyle = DataVisualization.Charting.ChartDashStyle.NotSet
                 .AxisY.MajorGrid.LineDashStyle = DataVisualization.Charting.ChartDashStyle.Dash
             End With
 
             _continue = True
+            _everConnected = False
             currentReading = 0
             totalReadings = 0
             serialPort = comboBox_SerialPorts.Text
@@ -264,47 +304,88 @@ Public Class frmMain
             num_DataPoints.Enabled = False
             lbl_DataPoints.Enabled = False
             comboBox_SerialPorts.Enabled = False
+            chkBox_LeakTest.Enabled = False
+            lbl_SecsConverter.Enabled = False
         Else
             Dim messageBoxAnswer As Integer
-            messageBoxAnswer = MessageBox.Show(Me, "Are you sure you want to disconnect, if you reconnect then you will need to wait until there are enough data points to evaluate.", "Disconnect?", MessageBoxButtons.YesNo)
+            messageBoxAnswer = MessageBox.Show(Me, "Are you sure you want to disconnect, if you reconnect then you will need to wait until there are enough data points to evaluate.", "Disconnect?", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
             If messageBoxAnswer = DialogResult.No Then
                 Exit Sub
             End If
-            _continue = False
-            btn_Connection.Text = "Connect"
-            num_DataPoints.Enabled = True
-            lbl_DataPoints.Enabled = True
-            comboBox_SerialPorts.Enabled = True
+            DisconnectIM()
         End If
 
     End Sub
 
+    Sub DisconnectIM()
+        _continue = False
+        btn_Connection.Text = "Connect"
+        num_DataPoints.Enabled = True
+        lbl_DataPoints.Enabled = True
+        comboBox_SerialPorts.Enabled = True
+        chkBox_LeakTest.Enabled = True
+        lbl_SecsConverter.Enabled = True
+    End Sub
+
     Private Sub parseData(readLine As String)
-        Dim parsedDT As Single
-        Dim parsedTF As Single
-        If readLine.IndexOf("1: ") > -1 And readLine.IndexOf("2: ") > -1 Then
-            Dim temp As String = readLine.Substring(readLine.IndexOf("1: ") + 3, 6)
-            parsedTF = Convert.ToSingle(temp)
-            temp = readLine.Substring(readLine.IndexOf("2: ") + 3, 6)
-            parsedDT = Convert.ToSingle(temp)
-            updateData(parsedDT, parsedTF)
+        Try
+            Dim parsedDT As Single
+            Dim parsedTF As Single
             txtBox_Hyperterminal.AppendText(readLine & vbCrLf)
-        End If
+            If readLine.IndexOf("1: ") > -1 And readLine.IndexOf("2: ") > -1 Then
+                Dim temp As String = readLine.Substring(readLine.IndexOf("1: ") + 3, 6)
+                parsedTF = Convert.ToSingle(temp)
+                temp = readLine.Substring(readLine.IndexOf("2: ") + 3, 6)
+                parsedDT = Convert.ToSingle(temp)
+                updateData(parsedDT, parsedTF)
+                txtBox_Hyperterminal.AppendText(readLine & vbCrLf)
+            End If
+        Catch ex As Exception
+        End Try
     End Sub
 
     Private Sub frmMain_Closing(sender As Object, e As CancelEventArgs) Handles Me.Closing
         If _continue Then
-            MessageBox.Show(Me, "Disconnect from the IMQTOF first!")
-            e.Cancel = True
+            Dim answer As Integer
+            answer = MessageBox.Show(Me, "This will disconnect from the IMQTOF and all data will be lost. Are you sure you want to close?", "IMQTOF Still Connected - Action Required", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
+            If answer = DialogResult.Yes Then
+                DisconnectIM()
+            Else
+                e.Cancel = True
+            End If
         End If
     End Sub
 
     Private Sub frmMain_Load(sender As Object, e As EventArgs) Handles Me.Load
+
         For Each sp As String In My.Computer.Ports.SerialPortNames
             comboBox_SerialPorts.Items.Add(sp)
         Next
         comboBox_SerialPorts.SelectedIndex = comboBox_SerialPorts.Items.Count - 1
         startTime = DateTime.UtcNow
+
+        lbl_Atribution.Text = "Icons made by Freepik from Flaticon is licensed by Creative Commons BY 3.0"
+        lbl_Atribution.Links.Add(14, 7, "http://www.freepik.com")
+        lbl_Atribution.Links.Add(27, 8, "https://www.flaticon.com/")
+        lbl_Atribution.Links.Add(51, 23, "http://creativecommons.org/licenses/by/3.0/")
+
+        lbl_Developer.Text = "Made in UK by Chris Page"
+        lbl_Developer.Links.Add(14, 10, "mailto: chris.page@agilent.com")
+
+    End Sub
+
+    Private Sub frmMain_Shown(sender As Object, e As EventArgs) Handles Me.Shown
+        _runEvents = True
+    End Sub
+
+    Private Sub lbl_Atribution_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles lbl_Atribution.LinkClicked
+        Dim target As String = Convert.ToString(e.Link.LinkData)
+        System.Diagnostics.Process.Start(target)
+    End Sub
+
+    Private Sub lbl_Developer_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles lbl_Developer.LinkClicked
+        Dim target As String = Convert.ToString(e.Link.LinkData)
+        System.Diagnostics.Process.Start(target)
     End Sub
 
     Function calcStandardDeviation(ByVal ParamArray args() As Single) As Single
@@ -324,19 +405,6 @@ Public Class frmMain
         Dim rsd As Single = (sd / average) * 100
         Return rsd
     End Function
-
-    Private Sub txtBox_dtSetpoint_TextChanged(sender As Object, e As EventArgs) Handles txtBox_tfSetpoint.TextChanged, txtBox_dtSetpoint.TextChanged
-        If txtBox_tfSetpoint.Text.Length > 0 And txtBox_dtSetpoint.Text.Length > 0 Then
-            lbl_DiffSetpoint.Text = Format(Convert.ToSingle(txtBox_dtSetpoint.Text) - Convert.ToSingle(txtBox_tfSetpoint.Text), "0.0000")
-        End If
-    End Sub
-
-    Private Sub txtBox_dtRSDSetpoint_TextChanged(sender As Object, e As EventArgs) Handles txtBox_dtRSDSetpoint.TextChanged
-        If txtBox_dtRSDSetpoint.Text.Length > 0 Then
-            'lbl_dtRSDSetpoint.Text = Format((((Convert.ToSingle(txtBox_dtRSDSetpoint.Text)) / 100) * Convert.ToSingle(txtBox_dtSetpoint.Text) * 1000), "0.00")
-            'lbl_dtRSDSetpoint.Text = (Convert.ToSingle(txtBox_dtRSDSetpoint.Text) / 100) * (Convert.ToSingle(txtBox_dtSetpoint.Text))
-        End If
-    End Sub
 
     Dim num_DataPointsPrevValue = 25
 
@@ -369,6 +437,148 @@ Public Class frmMain
         End Select
 
         num_DataPointsPrevValue = num_DataPoints.Value
+    End Sub
+
+    Private Sub chkBox_LeakTest_CheckedChanged(sender As Object, e As EventArgs) Handles chkBox_LeakTest.CheckedChanged
+        If chkBox_LeakTest.Checked = True Then
+            num_DataPoints.Enabled = False
+            lbl_DataPoints.Enabled = False
+            lbl_SecsConverter.Enabled = False
+            lbl_DT_RSD.Visible = False
+            lbl_TF_RSD.Visible = False
+            lbl_PercentSign.Visible = False
+            lbl_mTorr.Visible = False
+            lbl_Delta_RSD.Visible = False
+            lbl_Delta_SD.Visible = False
+            lbl_DT_SD.Visible = False
+            lbl_TF_SD.Visible = False
+            lbl_PlusMinus.Text = "Torr"
+
+            Dim message As String = "By checking this box the acceptable limits of the Drift Gas and Trap Funnel pressures are changed to 50mTorr and the Drift Tube Leak Rate is evaluated. Follow the steps below before clicking 'Connect':" & vbCr & vbCr
+            message &= "1. Set the Drift Tube Entrance voltage to 250V. (Set and apply in MassHunter). Arcing and an Error state can occur if this is not performed." & vbCr & vbCr
+            message &= "2. Set the instrument into standyby mode and allow gas temperatures to cool." & vbCr & vbCr
+            message &= "3. Remove the spray shield and capillary cap and place a GC septum over the ion transfer capillary hole and secure with a classic ESI spray shield (G1946-20157)." & vbCr & vbCr
+            message &= "4. Turn off the drift/funnel gas supplies by using the valves on the Pressure Control Module and IM chassis." & vbCr & vbCr
+            message &= "5. After 15 minutes the Drift Tube pressure should be less than 50 mTorr. If the pressure is greater than 50 mTorr then there is likely a leak in the drift gas assy, the trapping funnel assy, drift tube exit or any of the connecting flanges. N.B. if the capillary cap is in place the drift tube vacuum is approximately 75 mTorr." & vbCr & vbCr
+            MessageBox.Show(Me, message, "Running the IM Leak Test", MessageBoxButtons.OK, MessageBoxIcon.Information)
+        Else
+            lbl_DTPressure.ForeColor = Color.Black
+            lbl_TFPressure.ForeColor = Color.Black
+            num_DataPoints.Enabled = True
+            lbl_DataPoints.Enabled = True
+            lbl_SecsConverter.Enabled = True
+            If lbl_DTPressure.Text = "0.0000" Then
+                lbl_PlusMinus.Text = "Torr"
+            Else
+                lbl_PlusMinus.Text = "Torr ±"
+                lbl_DT_RSD.Visible = True
+                lbl_TF_RSD.Visible = True
+                lbl_PercentSign.Visible = True
+                lbl_mTorr.Visible = True
+                lbl_Delta_RSD.Visible = True
+                lbl_Delta_SD.Visible = True
+                lbl_DT_SD.Visible = True
+                lbl_TF_SD.Visible = True
+            End If
+        End If
+    End Sub
+
+    Private Sub txtBox_DT_Setpoint_TextChanged(sender As Object, e As EventArgs)
+
+        Select Case True
+            Case radBtn_DT.Checked
+            Case radBtn_TF.Checked
+            Case radBtn_Delta.Checked
+        End Select
+    End Sub
+
+    Private Sub txtBox_DT_Setpoint_Validating(sender As Object, e As CancelEventArgs) Handles txtBox_TF_Value_Setpoint.Validating, txtBox_TF_SD_Setpoint.Validating, txtBox_TF_RSD_Setpoint.Validating, txtBox_TF_Leak_Setpoint.Validating, txtBox_TF_Error_Setpoint.Validating, txtBox_DT_Value_Setpoint.Validating, txtBox_DT_SD_Setpoint.Validating, txtBox_DT_RSD_Setpoint.Validating, txtBox_DT_Leak_Setpoint.Validating, txtBox_DT_Error_Setpoint.Validating, txtBox_Delta_Value_Setpoint.Validating, txtBox_Delta_Error_Setpoint.Validating
+
+        If _runEvents = True Then
+            Dim t As TextBox = sender
+
+            If t.Text = "" Or IsNumeric(sender.text) = False Then
+                e.Cancel = True
+            End If
+
+            Dim tValue As Single = Convert.ToSingle(t.Text)
+
+            If tValue = 0 Then
+                e.Cancel = True
+            End If
+
+            Select Case True
+                Case t.Name.Contains("Value")
+                    t.Text = Format(tValue, "0.0000")
+                Case t.Name.Contains("SD")
+                    t.Text = Format(tValue, "0.00")
+                Case (t.Name.Contains("Error") Or t.Name.Contains("Leak"))
+                    t.Text = Format(tValue, "0")
+            End Select
+        End If
+
+    End Sub
+
+    Dim _runEvents = False
+
+    Private Sub txtBox_DT_Value_Setpoint_TextChanged(sender As Object, e As EventArgs) Handles txtBox_TF_Value_Setpoint.TextChanged, txtBox_TF_SD_Setpoint.TextChanged, txtBox_TF_RSD_Setpoint.TextChanged, txtBox_DT_Value_Setpoint.TextChanged, txtBox_DT_SD_Setpoint.TextChanged, txtBox_DT_RSD_Setpoint.TextChanged, txtBox_Delta_Value_Setpoint.TextChanged
+
+        If _runEvents = True Then
+
+            _runEvents = False
+
+            Dim t As TextBox = sender
+
+            Dim dtValue As Single = Convert.ToSingle(txtBox_DT_Value_Setpoint.Text)
+            Dim tfValue As Single = Convert.ToSingle(txtBox_TF_Value_Setpoint.Text)
+            Dim deltaValue As Single = Convert.ToSingle(txtBox_Delta_Value_Setpoint.Text)
+
+            Dim dtSD As Single = Convert.ToSingle(txtBox_DT_SD_Setpoint.Text)
+            Dim tfSD As Single = Convert.ToSingle(txtBox_TF_SD_Setpoint.Text)
+
+            Dim dtRSD As Single = Convert.ToSingle(txtBox_DT_RSD_Setpoint.Text)
+            Dim tfRSD As Single = Convert.ToSingle(txtBox_TF_RSD_Setpoint.Text)
+
+            Select Case True
+                Case t.Name.Contains("Value")
+                    Select Case True
+                        Case radBtn_DT.Checked
+                            If t.Name.Contains("TF") Then
+                                txtBox_Delta_Value_Setpoint.Text = Format(dtValue - tfValue, "0.0000")
+                            ElseIf t.Name.Contains("Delta") Then
+                                txtBox_TF_Value_Setpoint.Text = Format(dtValue - deltaValue, "0.0000")
+                            End If
+                        Case radBtn_TF.Checked
+                            If t.Name.Contains("DT") Then
+                                txtBox_Delta_Value_Setpoint.Text = Format(dtValue - tfValue, "0.0000")
+                            ElseIf t.Name.Contains("Delta") Then
+                                txtBox_DT_Value_Setpoint.Text = Format(tfValue + deltaValue, "0.0000")
+                            End If
+                        Case radBtn_Delta.Checked
+                            If t.Name.Contains("DT") Then
+                                txtBox_DT_Value_Setpoint.Text = Format(tfValue + deltaValue, "0.0000")
+                            ElseIf t.Name.Contains("TF") Then
+                                txtBox_Delta_Value_Setpoint.Text = Format(dtValue - deltaValue, "0.0000")
+                            End If
+                    End Select
+                Case t.Name.Contains("_SD")
+                    If t.Name.Contains("DT") Then
+                        txtBox_DT_RSD_Setpoint.Text = Format(((dtValue / dtSD) * 100) / 1000, "0.00")
+                    ElseIf t.Name.Contains("TF") Then
+                        txtBox_TF_RSD_Setpoint.Text = Format(((tfValue / tfSD) * 100) / 1000, "0.00")
+                    End If
+                Case t.Name.Contains("RSD")
+                    If t.Name.Contains("DT") Then
+                        txtBox_DT_SD_Setpoint.Text = Format(((dtRSD / 100) * dtValue) * 1000, "0.00")
+                    ElseIf t.Name.Contains("TF") Then
+                        txtBox_TF_SD_Setpoint.Text = Format(((tfRSD / 100) * tfValue) * 1000, "0.00")
+                    End If
+            End Select
+
+            _runEvents = True
+
+        End If
+
     End Sub
 
 End Class
