@@ -27,13 +27,14 @@ Public Class frmMain
     Dim tfRSDSetpoint As Single
 
     Dim theThread As System.Threading.Thread
-    Dim selectedPort As New IO.Ports.SerialPort
+    Dim selectedPort As IO.Ports.SerialPort
     Dim _continue As Boolean = False
     Dim _everConnected As Boolean = False
     Dim serialPort As String
 
-    Dim testMode As Boolean
+    Dim _runEvents = False
 
+    ' Update all of the various data outputs: Graphical, DataGridView, Labels and Color Codes
     Sub updateData(driftTube As Single, trapFunnel As Single)
 
         'If continue = false then prevent the UpdateData sub running otherwise there is a lag from the _continue flag being set to false and the reading thread being terminated
@@ -108,7 +109,7 @@ Public Class frmMain
                 lbl_PercentSign.Visible = True
             End If
 
-            ' _doNotContinueUpdate flag is used as 
+            ' _doNotContinueUpdate flag is used to check that once an array has been resized and filled with zeroes that no incorrect SDs/RSDs are returned 
             Dim _doNotContinueUpdate As Boolean
             Dim zeroDT As Integer = Array.FindIndex(recentDT, Function(val) val = 0)
 
@@ -116,6 +117,7 @@ Public Class frmMain
                 _doNotContinueUpdate = True
             End If
 
+            ' If the desired number of data points are reached and the array doesn't have any zeroes in it from a resize
             If totalReadings >= numDataPoints - 1 And _doNotContinueUpdate = False Then
 
                 Dim dtRSD As Single = Math.Round(calcRSD(recentDT), 2)
@@ -126,6 +128,7 @@ Public Class frmMain
                 Dim tfSD As Single = Math.Round(calcStandardDeviation(recentTF) * 1000, 1)
                 Dim deltaSD As Single = Math.Round(calcStandardDeviation(recentDelta) * 1000, 1)
 
+                ' Update stats labels
                 lbl_DT_RSD.Text = Format(dtRSD, "0.00")
                 lbl_TF_RSD.Text = Format(tfRSD, "0.00")
                 lbl_Delta_RSD.Text = Format(deltaRSD, "0.00")
@@ -137,6 +140,7 @@ Public Class frmMain
                 Dim dtRSDSetpoint As Single = Convert.ToSingle(txtBox_DT_RSD_Setpoint.Text)
                 Dim tfRSDSetpoint As Single = Convert.ToSingle(txtBox_TF_RSD_Setpoint.Text)
 
+                ' Update the stats labels with these colors
                 Select Case dtRSD
                     Case <= dtRSDSetpoint
                         lbl_DT_RSD.ForeColor = Color.LightGreen
@@ -163,6 +167,7 @@ Public Class frmMain
 
             End If
         Else
+            ' If leak test has been selected then the number of readings is 2500 (approx 15 minutes as per documentation)
             If totalReadings <= 2500 Then
                 chart_Data.ChartAreas(0).AxisX.Minimum = 0
                 chart_Data.ChartAreas(0).AxisX.Maximum = totalReadings
@@ -171,6 +176,7 @@ Public Class frmMain
                 chart_Data.ChartAreas(0).AxisX.Maximum = totalReadings
             End If
 
+            ' Update label colors based on documentation
             Select Case driftTube
                 Case <= 0.05
                     lbl_DTPressure.ForeColor = Color.LightGreen
@@ -200,28 +206,36 @@ Public Class frmMain
         End If
     End Sub
 
+    ' Thread to read the Serial Port data being received
     Public Sub readCOMData()
 
         Try
-            selectedPort = My.Computer.Ports.OpenSerialPort(serialPort, 19200, Parity.None, 8, StopBits.One)
-            selectedPort.ReadTimeout = 10000
-            AddHandler selectedPort.DataReceived, AddressOf DataReceivedHandler
+
+            ' Set port parameters as per HyperTerminal documentation
+            selectedPort = New SerialPort(serialPort)
+            selectedPort.BaudRate = 19200
+            selectedPort.Parity = Parity.None
+            selectedPort.StopBits = StopBits.One
+            selectedPort.ReadTimeout = 5000
+            selectedPort.Open()
+
             Dim incoming As String = selectedPort.ReadLine()
+
+            ' This variable is used in the Timeout Exception to help distinguish between whether the the read timeout timed out because the IM was disconnected or
+            ' because it was never connected. Helpful for troubleshooting
             If incoming IsNot Nothing Then
                 _everConnected = True
             End If
 
-            'Dim Output As String
-            'Output = Chr(27)
-            'selectedPort.WriteLine(Output)
-
-
+            ' Loop to read data
             Do
+                ' The _continue flag is set by clicking the connect/disconnect button
                 If _continue = True Then
                     incoming = selectedPort.ReadLine()
                     If incoming Is Nothing Then
                         Exit Do
                     Else
+                        ' Parse the data using the parseData function
                         Me.Invoke(Sub() parseData(incoming.ToString))
                     End If
                 Else
@@ -241,22 +255,16 @@ Public Class frmMain
 
     End Sub
 
-    Public Sub DataReceivedHandler(sender As Object,
-                        e As SerialDataReceivedEventArgs)
-
-        Dim sp As SerialPort = CType(sender, SerialPort)
-        Dim indata As String = sp.ReadExisting()
-        Me.Invoke(Sub() parseData(indata.ToString))
-
-    End Sub
-
+    ' Sub to handle the Connect/Disconnect button
     Private Sub btn_Connection_Click(sender As Object, e As EventArgs) Handles btn_Connection.Click
 
+        ' Check whether the instrument is connected (via the _continue flag) and whether a Serial Port has been specified
         If _continue = False And comboBox_SerialPorts.Text <> "" Then
             ReDim recentDT(num_DataPoints.Value - 1)
             ReDim recentTF(num_DataPoints.Value - 1)
             ReDim recentDelta(num_DataPoints.Value - 1)
 
+            ' Handle UI
             lbl_DT_RSD.Visible = False
             lbl_TF_RSD.Visible = False
             lbl_PercentSign.Visible = False
@@ -268,7 +276,6 @@ Public Class frmMain
             lbl_PlusMinus.Text = "Torr"
 
             ' Chart setup
-
             With chart_Data.Series
                 .Clear()
                 .Add("Drift Tube Pressure")
@@ -288,11 +295,11 @@ Public Class frmMain
             With chart_Data.ChartAreas(0)
                 .AxisY.LabelStyle.Format = "0.0"
                 .AxisX.LabelStyle.Format = "0"
-                '.AxisY.Interval = 0.1
                 .AxisX.MajorGrid.LineDashStyle = DataVisualization.Charting.ChartDashStyle.NotSet
                 .AxisY.MajorGrid.LineDashStyle = DataVisualization.Charting.ChartDashStyle.Dash
             End With
 
+            ' Set up continue and connect flags and get ready to start receiving data
             _continue = True
             _everConnected = False
             currentReading = 0
@@ -300,6 +307,8 @@ Public Class frmMain
             serialPort = comboBox_SerialPorts.Text
             theThread = New Threading.Thread(AddressOf readCOMData)
             theThread.Start()
+
+            ' Change UI to accept stats
             btn_Connection.Text = "Disconnect"
             num_DataPoints.Enabled = False
             lbl_DataPoints.Enabled = False
@@ -307,6 +316,7 @@ Public Class frmMain
             chkBox_LeakTest.Enabled = False
             lbl_SecsConverter.Enabled = False
         Else
+            ' Ensure that the IM is disconnected so that we can reconnect later
             Dim messageBoxAnswer As Integer
             messageBoxAnswer = MessageBox.Show(Me, "Are you sure you want to disconnect, if you reconnect then you will need to wait until there are enough data points to evaluate.", "Disconnect?", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
             If messageBoxAnswer = DialogResult.No Then
@@ -317,6 +327,7 @@ Public Class frmMain
 
     End Sub
 
+    ' Sub to disconnect Serial Port safely
     Sub DisconnectIM()
         _continue = False
         btn_Connection.Text = "Connect"
@@ -327,6 +338,7 @@ Public Class frmMain
         lbl_SecsConverter.Enabled = True
     End Sub
 
+    ' Sub to parse data
     Private Sub parseData(readLine As String)
         Try
             Dim parsedDT As Single
@@ -344,6 +356,7 @@ Public Class frmMain
         End Try
     End Sub
 
+    ' Sub to handle closing of form and disconnection of IM safely
     Private Sub frmMain_Closing(sender As Object, e As CancelEventArgs) Handles Me.Closing
         If _continue Then
             Dim answer As Integer
@@ -356,14 +369,17 @@ Public Class frmMain
         End If
     End Sub
 
+    ' Sub to load form.
     Private Sub frmMain_Load(sender As Object, e As EventArgs) Handles Me.Load
 
+        ' Get all serial ports that are available and display in combo box for selection.
         For Each sp As String In My.Computer.Ports.SerialPortNames
             comboBox_SerialPorts.Items.Add(sp)
         Next
         comboBox_SerialPorts.SelectedIndex = comboBox_SerialPorts.Items.Count - 1
         startTime = DateTime.UtcNow
 
+        ' Ensure that the correct Attribution is made as per the licencing
         lbl_Atribution.Text = "Icons made by Freepik from Flaticon is licensed by Creative Commons BY 3.0"
         lbl_Atribution.Links.Add(14, 7, "http://www.freepik.com")
         lbl_Atribution.Links.Add(27, 8, "https://www.flaticon.com/")
@@ -374,10 +390,13 @@ Public Class frmMain
 
     End Sub
 
+    ' Sub to handle form showing.
     Private Sub frmMain_Shown(sender As Object, e As EventArgs) Handles Me.Shown
+        ' Allow events to run again
         _runEvents = True
     End Sub
 
+    ' Subs to handle clicking of links
     Private Sub lbl_Atribution_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles lbl_Atribution.LinkClicked
         Dim target As String = Convert.ToString(e.Link.LinkData)
         System.Diagnostics.Process.Start(target)
@@ -388,6 +407,7 @@ Public Class frmMain
         System.Diagnostics.Process.Start(target)
     End Sub
 
+    ' Custom function to calculate standard deviation
     Function calcStandardDeviation(ByVal ParamArray args() As Single) As Single
         Dim average As Single = args.Average()
         Dim squaredDifferences(args.Length - 1) As Single
@@ -399,6 +419,7 @@ Public Class frmMain
         Return stdDev
     End Function
 
+    ' Custom function to calculate standard deviation
     Function calcRSD(ByVal ParamArray args() As Single) As Single
         Dim average As Single = args.Average()
         Dim sd As Single = calcStandardDeviation(args)
@@ -406,6 +427,11 @@ Public Class frmMain
         Return rsd
     End Function
 
+    ' Subs to handle number spinner up and down.
+    ' Only want to allow certain values:
+    ' 25: Quick 10 second check to allow approximate setting
+    ' 750: 5 minute test as per the documentation
+    ' 1500: 10 minute in depth oscillation test
     Dim num_DataPointsPrevValue = 25
 
     Private Sub num_DataPoints_ValueChanged(sender As Object, e As EventArgs) Handles num_DataPoints.ValueChanged
@@ -439,8 +465,11 @@ Public Class frmMain
         num_DataPointsPrevValue = num_DataPoints.Value
     End Sub
 
+    ' Sub to handle leak test check box being checked
     Private Sub chkBox_LeakTest_CheckedChanged(sender As Object, e As EventArgs) Handles chkBox_LeakTest.CheckedChanged
         If chkBox_LeakTest.Checked = True Then
+
+            ' Disable useless parts of UI for this test
             num_DataPoints.Enabled = False
             lbl_DataPoints.Enabled = False
             lbl_SecsConverter.Enabled = False
@@ -454,6 +483,7 @@ Public Class frmMain
             lbl_TF_SD.Visible = False
             lbl_PlusMinus.Text = "Torr"
 
+            ' Display information about how to run the leak test
             Dim message As String = "By checking this box the acceptable limits of the Drift Gas and Trap Funnel pressures are changed to 50mTorr and the Drift Tube Leak Rate is evaluated. Follow the steps below before clicking 'Connect':" & vbCr & vbCr
             message &= "1. Set the Drift Tube Entrance voltage to 250V. (Set and apply in MassHunter). Arcing and an Error state can occur if this is not performed." & vbCr & vbCr
             message &= "2. Set the instrument into standyby mode and allow gas temperatures to cool." & vbCr & vbCr
@@ -462,6 +492,8 @@ Public Class frmMain
             message &= "5. After 15 minutes the Drift Tube pressure should be less than 50 mTorr. If the pressure is greater than 50 mTorr then there is likely a leak in the drift gas assy, the trapping funnel assy, drift tube exit or any of the connecting flanges. N.B. if the capillary cap is in place the drift tube vacuum is approximately 75 mTorr." & vbCr & vbCr
             MessageBox.Show(Me, message, "Running the IM Leak Test", MessageBoxButtons.OK, MessageBoxIcon.Information)
         Else
+
+            ' Reset UI back to standard
             lbl_DTPressure.ForeColor = Color.Black
             lbl_TFPressure.ForeColor = Color.Black
             num_DataPoints.Enabled = True
@@ -483,15 +515,7 @@ Public Class frmMain
         End If
     End Sub
 
-    Private Sub txtBox_DT_Setpoint_TextChanged(sender As Object, e As EventArgs)
-
-        Select Case True
-            Case radBtn_DT.Checked
-            Case radBtn_TF.Checked
-            Case radBtn_Delta.Checked
-        End Select
-    End Sub
-
+    ' Sub to handle validation of text box inputs to ensure that they are numeric and formatted in a consistent manner
     Private Sub txtBox_DT_Setpoint_Validating(sender As Object, e As CancelEventArgs) Handles txtBox_TF_Value_Setpoint.Validating, txtBox_TF_SD_Setpoint.Validating, txtBox_TF_RSD_Setpoint.Validating, txtBox_TF_Leak_Setpoint.Validating, txtBox_TF_Error_Setpoint.Validating, txtBox_DT_Value_Setpoint.Validating, txtBox_DT_SD_Setpoint.Validating, txtBox_DT_RSD_Setpoint.Validating, txtBox_DT_Leak_Setpoint.Validating, txtBox_DT_Error_Setpoint.Validating, txtBox_Delta_Value_Setpoint.Validating, txtBox_Delta_Error_Setpoint.Validating
 
         If _runEvents = True Then
@@ -519,8 +543,7 @@ Public Class frmMain
 
     End Sub
 
-    Dim _runEvents = False
-
+    ' Sub to handle calculations after text box inputs are changed
     Private Sub txtBox_DT_Value_Setpoint_TextChanged(sender As Object, e As EventArgs) Handles txtBox_TF_Value_Setpoint.TextChanged, txtBox_TF_SD_Setpoint.TextChanged, txtBox_TF_RSD_Setpoint.TextChanged, txtBox_DT_Value_Setpoint.TextChanged, txtBox_DT_SD_Setpoint.TextChanged, txtBox_DT_RSD_Setpoint.TextChanged, txtBox_Delta_Value_Setpoint.TextChanged
 
         If _runEvents = True Then
