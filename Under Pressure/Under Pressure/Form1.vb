@@ -23,6 +23,7 @@ Public Class frmMain
 
     Dim dtSetpoint As Single
     Dim tfSetpoint As Single
+    Dim deltaSetpoint As Single
     Dim dtRSDSetpoint As Single
     Dim tfRSDSetpoint As Single
 
@@ -165,6 +166,41 @@ Public Class frmMain
                         lbl_TF_SD.ForeColor = Color.Red
                 End Select
 
+                Dim dtError As Single = Convert.ToSingle(txtBox_DT_Error_Setpoint.Text) / 1000
+                Dim tfError As Single = Convert.ToSingle(txtBox_TF_Error_Setpoint.Text) / 1000
+                Dim deltaError As Single = Convert.ToSingle(txtBox_Delta_Error_Setpoint.Text) / 1000
+
+                dtSetpoint = Convert.ToSingle(txtBox_DT_Value_Setpoint.Text)
+                tfSetpoint = Convert.ToSingle(txtBox_TF_Value_Setpoint.Text)
+                deltaSetpoint = Convert.ToSingle(txtBox_Delta_Value_Setpoint.Text)
+
+                Select Case Math.Abs(dtSetpoint - driftTube)
+                    Case <= dtError
+                        lbl_DTPressure.ForeColor = Color.LightGreen
+                    Case <= dtError * 2
+                        lbl_DTPressure.ForeColor = Color.Orange
+                    Case > dtError
+                        lbl_DTPressure.ForeColor = Color.Red
+                End Select
+
+                Select Case Math.Abs(tfSetpoint - trapFunnel)
+                    Case <= tfError
+                        lbl_TFPressure.ForeColor = Color.LightGreen
+                    Case <= tfError * 2
+                        lbl_TFPressure.ForeColor = Color.Orange
+                    Case > tfError
+                        lbl_TFPressure.ForeColor = Color.Red
+                End Select
+
+                Select Case Math.Abs(deltaSetpoint - delta)
+                    Case <= deltaError
+                        lbl_DeltaPressure.ForeColor = Color.LightGreen
+                    Case <= deltaError * 2
+                        lbl_DeltaPressure.ForeColor = Color.Orange
+                    Case > deltaError
+                        lbl_DeltaPressure.ForeColor = Color.Red
+                End Select
+
             End If
         Else
             ' If leak test has been selected then the number of readings is 2500 (approx 15 minutes as per documentation)
@@ -274,6 +310,10 @@ Public Class frmMain
             lbl_DT_SD.Visible = False
             lbl_TF_SD.Visible = False
             lbl_PlusMinus.Text = "Torr"
+
+            lbl_DTPressure.ForeColor = Color.Black
+            lbl_TFPressure.ForeColor = Color.Black
+            lbl_DeltaPressure.ForeColor = Color.Black
 
             ' Chart setup
             With chart_Data.Series
