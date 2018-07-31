@@ -281,9 +281,9 @@ Public Class frmMain
             Loop
         Catch ex As TimeoutException
             If _everConnected Then
-                MessageBox.Show(Me, "Lost connection to IMQTOF on " & serialPort, "Error with Connection", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                MessageBox.Show(Me, "Lost connection to IMQTOF on " & serialPort, "Under Pressure - Error with Connection", MessageBoxButtons.OK, MessageBoxIcon.Error)
             Else
-                MessageBox.Show(Me, "Unabled to connect to IMQTOF on " & serialPort, "Error with Connection", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                MessageBox.Show(Me, "Unabled to connect to IMQTOF on " & serialPort, "Under Pressure - Error with Connection", MessageBoxButtons.OK, MessageBoxIcon.Error)
             End If
             Me.Invoke(Sub() DisconnectIM())
         Catch ex As Exception
@@ -296,6 +296,31 @@ Public Class frmMain
 
         ' Check whether the instrument is connected (via the _continue flag) and whether a Serial Port has been specified
         If _continue = False And comboBox_SerialPorts.Text <> "" Then
+
+            Dim answer As Integer
+            Dim message As String
+            message = "For this program to work then the Hyperterminal connection needs to be running in the background. Please follow the steps below to establish a connection:" & vbCr & vbCr
+            message &= "If an IM Hyperterminl connection has been previously created then open the connection and skip to step 5." & vbCr & vbCr
+            message &= "1. Open Hyperterminal. Click 'New Connection' and enter an name and an icon." & vbCr & vbCr
+            message &= "2. Select the correct COM port" & vbCr & vbCr
+            message &= "3. Set the Serial Port properties as per the following:" & vbCr & vbCr
+            message &= "Baud Rate: 19200 bits per second" & vbCr
+            message &= "Data bits: 8" & vbCr
+            message &= "Parity: None" & vbCr
+            message &= "Stop bits: 1" & vbCr
+            message &= "Flow Control: None" & vbCr & vbCr
+            message &= "4. Click OK and File > Save As the connection as IMQTOF" & vbCr & vbCr
+            message &= "5. Press the escape key until the revision and a list of commands is shown" & vbCr & vbCr
+            message &= "6. Enter '5' into Hyperterminal" & vbCr & vbCr
+            message &= "7. If a scrolling output is displayed similar to the below then Hyperterminal can be closed as the instrument is ready to connect to:" & vbCr & "CON>1: 3.7868 0x50 2: 3.9459 0x00" & vbCr & vbCr
+            message &= "8. If the output is blank or static then enter the command RCN and press enter to start the scrolling output and close Hyperterminal" & vbCr & vbCr
+            message &= "Has the scrolling output been activated and Hyperterminal been closed?"
+            answer = MessageBox.Show(Me, message, "Under Pressure - Ensure Hyperterminal is Running in Background", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
+
+            If answer = DialogResult.No Then
+                Exit Sub
+            End If
+
             ReDim recentDT(num_DataPoints.Value - 1)
             ReDim recentTF(num_DataPoints.Value - 1)
             ReDim recentDelta(num_DataPoints.Value - 1)
@@ -358,7 +383,7 @@ Public Class frmMain
         Else
             ' Ensure that the IM is disconnected so that we can reconnect later
             Dim messageBoxAnswer As Integer
-            messageBoxAnswer = MessageBox.Show(Me, "Are you sure you want to disconnect, if you reconnect then you will need to wait until there are enough data points to evaluate.", "Disconnect?", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
+            messageBoxAnswer = MessageBox.Show(Me, "Are you sure you want to disconnect, if you reconnect then you will need to wait until there are enough data points to evaluate.", "Under Pressure - Disconnect from IM", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
             If messageBoxAnswer = DialogResult.No Then
                 Exit Sub
             End If
@@ -400,7 +425,7 @@ Public Class frmMain
     Private Sub frmMain_Closing(sender As Object, e As CancelEventArgs) Handles Me.Closing
         If _continue Then
             Dim answer As Integer
-            answer = MessageBox.Show(Me, "This will disconnect from the IMQTOF and all data will be lost. Are you sure you want to close?", "IMQTOF Still Connected - Action Required", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
+            answer = MessageBox.Show(Me, "This will disconnect from the IMQTOF and all data will be lost. Are you sure you want to close?", "Under Pressure - IMQTOF Still Connected!", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
             If answer = DialogResult.Yes Then
                 DisconnectIM()
             Else
@@ -530,7 +555,7 @@ Public Class frmMain
             message &= "3. Remove the spray shield and capillary cap and place a GC septum over the ion transfer capillary hole and secure with a classic ESI spray shield (G1946-20157)." & vbCr & vbCr
             message &= "4. Turn off the drift/funnel gas supplies by using the valves on the Pressure Control Module and IM chassis." & vbCr & vbCr
             message &= "5. After 15 minutes the Drift Tube pressure should be less than 50 mTorr. If the pressure is greater than 50 mTorr then there is likely a leak in the drift gas assy, the trapping funnel assy, drift tube exit or any of the connecting flanges. N.B. if the capillary cap is in place the drift tube vacuum is approximately 75 mTorr." & vbCr & vbCr
-            MessageBox.Show(Me, message, "Running the IM Leak Test", MessageBoxButtons.OK, MessageBoxIcon.Information)
+            MessageBox.Show(Me, message, "Under Pressure - Running the IM Leak Test", MessageBoxButtons.OK, MessageBoxIcon.Information)
         Else
 
             ' Reset UI back to standard
