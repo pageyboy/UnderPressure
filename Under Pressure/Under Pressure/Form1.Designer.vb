@@ -25,8 +25,6 @@ Partial Class frmMain
         Dim ChartArea1 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
         Dim Legend1 As System.Windows.Forms.DataVisualization.Charting.Legend = New System.Windows.Forms.DataVisualization.Charting.Legend()
         Dim Series1 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
-        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMain))
         Me.btn_Connection = New System.Windows.Forms.Button()
         Me.TabControl1 = New System.Windows.Forms.TabControl()
@@ -34,6 +32,12 @@ Partial Class frmMain
         Me.chart_Data = New System.Windows.Forms.DataVisualization.Charting.Chart()
         Me.TabPage2 = New System.Windows.Forms.TabPage()
         Me.dgv_Data = New System.Windows.Forms.DataGridView()
+        Me.TimeDate = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.mSecs = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.DataPointsSinceConnection = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.DTPressure = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.TFPressure = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.DiffPressure = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.TabPage3 = New System.Windows.Forms.TabPage()
         Me.txtBox_Hyperterminal = New System.Windows.Forms.TextBox()
         Me.comboBox_SerialPorts = New System.Windows.Forms.ComboBox()
@@ -107,12 +111,6 @@ Partial Class frmMain
         Me.chkBox_LeakTest = New System.Windows.Forms.CheckBox()
         Me.lbl_Atribution = New System.Windows.Forms.LinkLabel()
         Me.lbl_Developer = New System.Windows.Forms.LinkLabel()
-        Me.TimeDate = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.mSecs = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.DataPointsSinceConnection = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.DTPressure = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.TFPressure = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.DiffPressure = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         CType(Me.chart_Data, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -193,30 +191,56 @@ Partial Class frmMain
         Me.dgv_Data.AllowUserToAddRows = False
         Me.dgv_Data.AllowUserToDeleteRows = False
         Me.dgv_Data.AllowUserToResizeRows = False
-        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle1.Font = New System.Drawing.Font("Arial monospaced for SAP", 11.0!)
-        DataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.dgv_Data.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle1
         Me.dgv_Data.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.dgv_Data.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.TimeDate, Me.mSecs, Me.DataPointsSinceConnection, Me.DTPressure, Me.TFPressure, Me.DiffPressure})
-        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle2.Font = New System.Drawing.Font("Arial monospaced for SAP", 10.0!)
-        DataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.dgv_Data.DefaultCellStyle = DataGridViewCellStyle2
         Me.dgv_Data.Dock = System.Windows.Forms.DockStyle.Fill
         Me.dgv_Data.Location = New System.Drawing.Point(3, 3)
         Me.dgv_Data.Name = "dgv_Data"
         Me.dgv_Data.ReadOnly = True
         Me.dgv_Data.Size = New System.Drawing.Size(1379, 235)
         Me.dgv_Data.TabIndex = 0
+        '
+        'TimeDate
+        '
+        Me.TimeDate.HeaderText = "Date & Time"
+        Me.TimeDate.Name = "TimeDate"
+        Me.TimeDate.ReadOnly = True
+        Me.TimeDate.Width = 200
+        '
+        'mSecs
+        '
+        Me.mSecs.HeaderText = "Time Since Program Start (mSeconds)"
+        Me.mSecs.Name = "mSecs"
+        Me.mSecs.ReadOnly = True
+        Me.mSecs.Width = 150
+        '
+        'DataPointsSinceConnection
+        '
+        Me.DataPointsSinceConnection.HeaderText = "Data Points Since Connection"
+        Me.DataPointsSinceConnection.Name = "DataPointsSinceConnection"
+        Me.DataPointsSinceConnection.ReadOnly = True
+        Me.DataPointsSinceConnection.Width = 150
+        '
+        'DTPressure
+        '
+        Me.DTPressure.HeaderText = "Drift Tube Pressure"
+        Me.DTPressure.Name = "DTPressure"
+        Me.DTPressure.ReadOnly = True
+        Me.DTPressure.Width = 150
+        '
+        'TFPressure
+        '
+        Me.TFPressure.HeaderText = "Trap Funnel Pressure"
+        Me.TFPressure.Name = "TFPressure"
+        Me.TFPressure.ReadOnly = True
+        Me.TFPressure.Width = 150
+        '
+        'DiffPressure
+        '
+        Me.DiffPressure.HeaderText = "Delta Pressure"
+        Me.DiffPressure.Name = "DiffPressure"
+        Me.DiffPressure.ReadOnly = True
+        Me.DiffPressure.Width = 150
         '
         'TabPage3
         '
@@ -1015,48 +1039,6 @@ Partial Class frmMain
         Me.lbl_Developer.TabStop = True
         Me.lbl_Developer.Text = "Developer Placeholder"
         Me.lbl_Developer.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        '
-        'TimeDate
-        '
-        Me.TimeDate.HeaderText = "Date & Time"
-        Me.TimeDate.Name = "TimeDate"
-        Me.TimeDate.ReadOnly = True
-        Me.TimeDate.Width = 200
-        '
-        'mSecs
-        '
-        Me.mSecs.HeaderText = "Time Since Program Start (mSeconds)"
-        Me.mSecs.Name = "mSecs"
-        Me.mSecs.ReadOnly = True
-        Me.mSecs.Width = 150
-        '
-        'DataPointsSinceConnection
-        '
-        Me.DataPointsSinceConnection.HeaderText = "Data Points Since Connection"
-        Me.DataPointsSinceConnection.Name = "DataPointsSinceConnection"
-        Me.DataPointsSinceConnection.ReadOnly = True
-        Me.DataPointsSinceConnection.Width = 150
-        '
-        'DTPressure
-        '
-        Me.DTPressure.HeaderText = "Drift Tube Pressure"
-        Me.DTPressure.Name = "DTPressure"
-        Me.DTPressure.ReadOnly = True
-        Me.DTPressure.Width = 150
-        '
-        'TFPressure
-        '
-        Me.TFPressure.HeaderText = "Trap Funnel Pressure"
-        Me.TFPressure.Name = "TFPressure"
-        Me.TFPressure.ReadOnly = True
-        Me.TFPressure.Width = 150
-        '
-        'DiffPressure
-        '
-        Me.DiffPressure.HeaderText = "Delta Pressure"
-        Me.DiffPressure.Name = "DiffPressure"
-        Me.DiffPressure.ReadOnly = True
-        Me.DiffPressure.Width = 150
         '
         'frmMain
         '

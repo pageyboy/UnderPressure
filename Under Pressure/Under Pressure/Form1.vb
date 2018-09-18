@@ -138,6 +138,11 @@ Public Class frmMain
                 lbl_TF_SD.Text = Format(tfSD, "0.0")
                 lbl_Delta_SD.Text = Format(deltaSD, "0.0")
 
+                ' Fixes Issue #1 by checking for numeric values
+                If Not IsNumeric(txtBox_DT_RSD_Setpoint.Text) Or Not IsNumeric(txtBox_TF_RSD_Setpoint.Text) Then
+                    Exit Sub
+                End If
+
                 Dim dtRSDSetpoint As Single = Convert.ToSingle(txtBox_DT_RSD_Setpoint.Text)
                 Dim tfRSDSetpoint As Single = Convert.ToSingle(txtBox_TF_RSD_Setpoint.Text)
 
@@ -165,6 +170,13 @@ Public Class frmMain
                         lbl_TF_RSD.ForeColor = Color.Red
                         lbl_TF_SD.ForeColor = Color.Red
                 End Select
+
+                ' Fixes Issue #1 by checking for numeric values
+                If Not IsNumeric(txtBox_DT_Error_Setpoint.Text) Or Not IsNumeric(txtBox_TF_Error_Setpoint.Text) Or
+                    Not IsNumeric(txtBox_Delta_Error_Setpoint.Text) Or Not IsNumeric(txtBox_DT_Value_Setpoint.Text) Or
+                    Not IsNumeric(txtBox_TF_Value_Setpoint.Text) Or Not IsNumeric(txtBox_Delta_Value_Setpoint.Text) Then
+                    Exit Sub
+                End If
 
                 Dim dtError As Single = Convert.ToSingle(txtBox_DT_Error_Setpoint.Text) / 1000
                 Dim tfError As Single = Convert.ToSingle(txtBox_TF_Error_Setpoint.Text) / 1000
@@ -202,7 +214,7 @@ Public Class frmMain
                 End Select
 
             End If
-        Else
+            Else
             ' If leak test has been selected then the number of readings is 2500 (approx 15 minutes as per documentation)
             If totalReadings <= 2500 Then
                 chart_Data.ChartAreas(0).AxisX.Minimum = 0
@@ -609,13 +621,24 @@ Public Class frmMain
     End Sub
 
     ' Sub to handle calculations after text box inputs are changed
-    Private Sub txtBox_DT_Value_Setpoint_TextChanged(sender As Object, e As EventArgs) Handles txtBox_TF_Value_Setpoint.TextChanged, txtBox_TF_SD_Setpoint.TextChanged, txtBox_TF_RSD_Setpoint.TextChanged, txtBox_DT_Value_Setpoint.TextChanged, txtBox_DT_SD_Setpoint.TextChanged, txtBox_DT_RSD_Setpoint.TextChanged, txtBox_Delta_Value_Setpoint.TextChanged
+    Private Sub txtBox_DT_Value_Setpoint_TextChanged(sender As Object, e As EventArgs) Handles _
+        txtBox_TF_Value_Setpoint.TextChanged, txtBox_TF_SD_Setpoint.TextChanged, txtBox_TF_RSD_Setpoint.TextChanged,
+        txtBox_DT_Value_Setpoint.TextChanged, txtBox_DT_SD_Setpoint.TextChanged, txtBox_DT_RSD_Setpoint.TextChanged,
+        txtBox_Delta_Value_Setpoint.TextChanged
+
+        Dim t As TextBox = sender
+
+        ' Fixes Issue #1 by checking for numeric values
+        If Not IsNumeric(t.Text) Then
+            t.BackColor = Color.PaleVioletRed
+            Exit Sub
+        Else
+            t.BackColor = System.Drawing.SystemColors.Window
+        End If
 
         If _runEvents = True Then
 
             _runEvents = False
-
-            Dim t As TextBox = sender
 
             Dim dtValue As Single = Convert.ToSingle(txtBox_DT_Value_Setpoint.Text)
             Dim tfValue As Single = Convert.ToSingle(txtBox_TF_Value_Setpoint.Text)
@@ -665,6 +688,21 @@ Public Class frmMain
 
             _runEvents = True
 
+        End If
+
+    End Sub
+
+    Private Sub txtBox_DT_Leak_Setpoint_TextChanged(sender As Object, e As EventArgs) Handles txtBox_DT_Leak_Setpoint.TextChanged, txtBox_TF_Leak_Setpoint.TextChanged,
+            txtBox_DT_Error_Setpoint.TextChanged, txtBox_TF_Error_Setpoint.TextChanged, txtBox_Delta_Error_Setpoint.TextChanged
+
+        Dim t As TextBox = sender
+
+        ' Fixes Issue #1 by checking for numeric values
+        If Not IsNumeric(t.Text) Then
+            t.BackColor = Color.PaleVioletRed
+            Exit Sub
+        Else
+            t.BackColor = System.Drawing.SystemColors.Window
         End If
 
     End Sub
