@@ -2,8 +2,6 @@
 
 Under Pressure is a lightweight application to facilitate monitoring of the drift gas pressures related to the Agilent G6560X IM-QTOF.
 
----
-
 ## Background
 
 The current method of monitoring drift gas pressures is a little hit and miss. A hyperterminal connection is made and the stream of data in the hyperterminal window is eyeballed.
@@ -24,8 +22,6 @@ In response to this and to alleviate frustrations in the lab this tool was devel
 * Graphs and all statistics plotted and calculated allowing precise measurement of key data
 * Large font allows good visibility even if the PC is at the other end of the adjustment valves
 
----
-
 ## Getting Started
 
 These instructions will help you get this application set up on the controlling data system connected to your Agilent G6560X IM-QTOF
@@ -37,8 +33,6 @@ Under Pressure\Under Pressure\bin\Debug\
 ```
 
 The file that is downloaded may be quarantined by your AntiVirus and so you may need to add an exception in to allow this file through.
-
----
 
 ## Using Under Pressure
 
@@ -53,3 +47,9 @@ The file that is downloaded may be quarantined by your AntiVirus and so you may 
 * Red = Major Leak (>75 mTorr).
 
 ![Leak test on screen information](https://raw.githubusercontent.com/pageyboy/UnderPressure/master/Readme%20Images/LeakTest.png)
+
+## Authors
+
+* **Chris Page** - *Initial Work* - [Pageyboy](https://github.com/pageyboy/)
+
+## License
