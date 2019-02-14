@@ -130,9 +130,9 @@ Public Class frmMain
                 Dim deltaSD As Single = Math.Round(calcStandardDeviation(recentDelta) * 1000, 1)
 
                 ' Update stats labels
-                lbl_DT_RSD.Text = Format(dtRSD, "0.00")
-                lbl_TF_RSD.Text = Format(tfRSD, "0.00")
-                lbl_Delta_RSD.Text = Format(deltaRSD, "0.00")
+                lbl_DT_RSD.Text = Format(dtRSD, "0.000")
+                lbl_TF_RSD.Text = Format(tfRSD, "0.000")
+                lbl_Delta_RSD.Text = Format(deltaRSD, "0.000")
 
                 lbl_DT_SD.Text = Format(dtSD, "0.0")
                 lbl_TF_SD.Text = Format(tfSD, "0.0")
@@ -680,9 +680,9 @@ Public Class frmMain
                     End If
                 Case t.Name.Contains("RSD")
                     If t.Name.Contains("DT") Then
-                        txtBox_DT_SD_Setpoint.Text = Format(((dtRSD / 100) * dtValue) * 1000, "0.00")
+                        txtBox_DT_SD_Setpoint.Text = Format(((dtRSD / 100) * dtValue) * 1000, "0.000")
                     ElseIf t.Name.Contains("TF") Then
-                        txtBox_TF_SD_Setpoint.Text = Format(((tfRSD / 100) * tfValue) * 1000, "0.00")
+                        txtBox_TF_SD_Setpoint.Text = Format(((tfRSD / 100) * tfValue) * 1000, "0.000")
                     End If
             End Select
 

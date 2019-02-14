@@ -144,7 +144,7 @@ Partial Class frmMain
         Me.TabControl1.Location = New System.Drawing.Point(12, 454)
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
-        Me.TabControl1.Size = New System.Drawing.Size(1393, 274)
+        Me.TabControl1.Size = New System.Drawing.Size(1410, 274)
         Me.TabControl1.TabIndex = 11
         '
         'TabPage1
@@ -153,7 +153,7 @@ Partial Class frmMain
         Me.TabPage1.Location = New System.Drawing.Point(4, 29)
         Me.TabPage1.Name = "TabPage1"
         Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage1.Size = New System.Drawing.Size(1385, 241)
+        Me.TabPage1.Size = New System.Drawing.Size(1402, 241)
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "Graphical"
         Me.TabPage1.UseVisualStyleBackColor = True
@@ -171,7 +171,7 @@ Partial Class frmMain
         Series1.Legend = "Legend1"
         Series1.Name = "Series1"
         Me.chart_Data.Series.Add(Series1)
-        Me.chart_Data.Size = New System.Drawing.Size(1379, 235)
+        Me.chart_Data.Size = New System.Drawing.Size(1396, 235)
         Me.chart_Data.TabIndex = 0
         Me.chart_Data.Text = "Chart1"
         '
@@ -302,7 +302,7 @@ Partial Class frmMain
         Me.TabControl2.Location = New System.Drawing.Point(12, 67)
         Me.TabControl2.Name = "TabControl2"
         Me.TabControl2.SelectedIndex = 0
-        Me.TabControl2.Size = New System.Drawing.Size(1397, 381)
+        Me.TabControl2.Size = New System.Drawing.Size(1410, 381)
         Me.TabControl2.TabIndex = 26
         '
         'TabPage4
@@ -326,7 +326,7 @@ Partial Class frmMain
         Me.TabPage4.Location = New System.Drawing.Point(4, 29)
         Me.TabPage4.Name = "TabPage4"
         Me.TabPage4.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage4.Size = New System.Drawing.Size(1389, 348)
+        Me.TabPage4.Size = New System.Drawing.Size(1402, 348)
         Me.TabPage4.TabIndex = 0
         Me.TabPage4.Text = "Measure"
         '
@@ -334,7 +334,7 @@ Partial Class frmMain
         '
         Me.lbl_PercentSign.AutoSize = True
         Me.lbl_PercentSign.Font = New System.Drawing.Font("Arial monospaced for SAP", 26.25!)
-        Me.lbl_PercentSign.Location = New System.Drawing.Point(1334, 157)
+        Me.lbl_PercentSign.Location = New System.Drawing.Point(1348, 157)
         Me.lbl_PercentSign.Name = "lbl_PercentSign"
         Me.lbl_PercentSign.Size = New System.Drawing.Size(38, 40)
         Me.lbl_PercentSign.TabIndex = 55
@@ -347,9 +347,9 @@ Partial Class frmMain
         Me.lbl_Delta_RSD.Font = New System.Drawing.Font("Arial monospaced for SAP", 63.75!)
         Me.lbl_Delta_RSD.Location = New System.Drawing.Point(1072, 238)
         Me.lbl_Delta_RSD.Name = "lbl_Delta_RSD"
-        Me.lbl_Delta_RSD.Size = New System.Drawing.Size(246, 98)
+        Me.lbl_Delta_RSD.Size = New System.Drawing.Size(297, 98)
         Me.lbl_Delta_RSD.TabIndex = 54
-        Me.lbl_Delta_RSD.Text = "1.80"
+        Me.lbl_Delta_RSD.Text = "1.800"
         Me.lbl_Delta_RSD.Visible = False
         '
         'lbl_DT_RSD
@@ -358,9 +358,9 @@ Partial Class frmMain
         Me.lbl_DT_RSD.Font = New System.Drawing.Font("Arial monospaced for SAP", 63.75!)
         Me.lbl_DT_RSD.Location = New System.Drawing.Point(1072, 18)
         Me.lbl_DT_RSD.Name = "lbl_DT_RSD"
-        Me.lbl_DT_RSD.Size = New System.Drawing.Size(246, 98)
+        Me.lbl_DT_RSD.Size = New System.Drawing.Size(297, 98)
         Me.lbl_DT_RSD.TabIndex = 53
-        Me.lbl_DT_RSD.Text = "0.03"
+        Me.lbl_DT_RSD.Text = "0.030"
         Me.lbl_DT_RSD.Visible = False
         '
         'lbl_TF_RSD
@@ -369,9 +369,9 @@ Partial Class frmMain
         Me.lbl_TF_RSD.Font = New System.Drawing.Font("Arial monospaced for SAP", 63.75!)
         Me.lbl_TF_RSD.Location = New System.Drawing.Point(1072, 128)
         Me.lbl_TF_RSD.Name = "lbl_TF_RSD"
-        Me.lbl_TF_RSD.Size = New System.Drawing.Size(246, 98)
+        Me.lbl_TF_RSD.Size = New System.Drawing.Size(297, 98)
         Me.lbl_TF_RSD.TabIndex = 52
-        Me.lbl_TF_RSD.Text = "0.03"
+        Me.lbl_TF_RSD.Text = "0.030"
         Me.lbl_TF_RSD.Visible = False
         '
         'lbl_mTorr
@@ -1012,7 +1012,7 @@ Partial Class frmMain
         '
         Me.chkBox_LeakTest.AutoSize = True
         Me.chkBox_LeakTest.Font = New System.Drawing.Font("Arial monospaced for SAP", 15.0!)
-        Me.chkBox_LeakTest.Location = New System.Drawing.Point(1272, 22)
+        Me.chkBox_LeakTest.Location = New System.Drawing.Point(1285, 22)
         Me.chkBox_LeakTest.Name = "chkBox_LeakTest"
         Me.chkBox_LeakTest.Size = New System.Drawing.Size(137, 27)
         Me.chkBox_LeakTest.TabIndex = 3
@@ -1046,7 +1046,7 @@ Partial Class frmMain
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
-        Me.ClientSize = New System.Drawing.Size(1421, 752)
+        Me.ClientSize = New System.Drawing.Size(1434, 752)
         Me.Controls.Add(Me.lbl_Developer)
         Me.Controls.Add(Me.lbl_Atribution)
         Me.Controls.Add(Me.chkBox_LeakTest)
@@ -1059,8 +1059,8 @@ Partial Class frmMain
         Me.Controls.Add(Me.btn_Connection)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
-        Me.MaximumSize = New System.Drawing.Size(1437, 790)
-        Me.MinimumSize = New System.Drawing.Size(1437, 790)
+        Me.MaximumSize = New System.Drawing.Size(1450, 790)
+        Me.MinimumSize = New System.Drawing.Size(1450, 790)
         Me.Name = "frmMain"
         Me.Text = "Under Pressure - Drift Tube Pressure Monitor"
         Me.TabControl1.ResumeLayout(False)
