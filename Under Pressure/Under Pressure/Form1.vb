@@ -36,6 +36,10 @@ Public Class frmMain
     Dim serialPort As String
     Dim _acquisition As Boolean = False
 
+    Dim colorGood As Color = Color.Green
+    Dim colorOK As Color = Color.Orange
+    Dim colorBad As Color = Color.Red
+
     Dim _runEvents = False
 
     ' Update all of the various data outputs: Graphical, DataGridView, Labels and Color Codes
@@ -101,6 +105,8 @@ Public Class frmMain
 
             ' If the total number of readings that the user has requested are used for statistics have been reached then the statistics can be calculated and the labels to display these can be made visible.
             If totalReadings >= numDataPoints - 1 Then
+                lbl_DataPointWarning.Text = "Number of data points OK"
+                lbl_DataPointWarning.ForeColor = colorGood
                 lbl_Delta_SD.Visible = True
                 lbl_DT_SD.Visible = True
                 lbl_TF_SD.Visible = True
@@ -112,6 +118,9 @@ Public Class frmMain
                 lbl_TF_RSD.Visible = True
 
                 lbl_PercentSign.Visible = True
+            Else
+                lbl_DataPointWarning.Text = "Waiting for correct number of data points"
+                lbl_DataPointWarning.ForeColor = colorBad
             End If
 
             ' _doNotContinueUpdate flag is used to check that once an array has been resized and filled with zeroes that no incorrect SDs/RSDs are returned 
@@ -125,9 +134,9 @@ Public Class frmMain
             ' If the desired number of data points are reached and the array doesn't have any zeroes in it from a resize
             If totalReadings >= numDataPoints - 1 And _doNotContinueUpdate = False Then
 
-                Dim dtRSD As Single = Math.Round(calcRSD(recentDT), 2)
-                Dim tfRSD As Single = Math.Round(calcRSD(recentTF), 2)
-                Dim deltaRSD As Single = Math.Round(calcRSD(recentDelta), 2)
+                Dim dtRSD As Single = Math.Round(calcRSD(recentDT), 3)
+                Dim tfRSD As Single = Math.Round(calcRSD(recentTF), 3)
+                Dim deltaRSD As Single = Math.Round(calcRSD(recentDelta), 3)
 
                 Dim dtSD As Single = Math.Round(calcStandardDeviation(recentDT) * 1000, 1)
                 Dim tfSD As Single = Math.Round(calcStandardDeviation(recentTF) * 1000, 1)
@@ -153,26 +162,26 @@ Public Class frmMain
                 ' Update the stats labels with these colors
                 Select Case dtRSD
                     Case <= dtRSDSetpoint
-                        lbl_DT_RSD.ForeColor = Color.LightGreen
-                        lbl_DT_SD.ForeColor = Color.LightGreen
+                        lbl_DT_RSD.ForeColor = colorGood
+                        lbl_DT_SD.ForeColor = colorGood
                     Case <= dtRSDSetpoint * 2
-                        lbl_DT_RSD.ForeColor = Color.Orange
-                        lbl_DT_SD.ForeColor = Color.Orange
+                        lbl_DT_RSD.ForeColor = colorOK
+                        lbl_DT_SD.ForeColor = colorOK
                     Case Else
-                        lbl_DT_RSD.ForeColor = Color.Red
-                        lbl_DT_SD.ForeColor = Color.Red
+                        lbl_DT_RSD.ForeColor = colorBad
+                        lbl_DT_SD.ForeColor = colorBad
                 End Select
 
                 Select Case tfRSD
                     Case <= tfRSDSetpoint
-                        lbl_TF_RSD.ForeColor = Color.LightGreen
-                        lbl_TF_SD.ForeColor = Color.LightGreen
+                        lbl_TF_RSD.ForeColor = colorGood
+                        lbl_TF_SD.ForeColor = colorGood
                     Case <= tfRSDSetpoint * 2
-                        lbl_TF_RSD.ForeColor = Color.Orange
-                        lbl_TF_SD.ForeColor = Color.Orange
+                        lbl_TF_RSD.ForeColor = colorOK
+                        lbl_TF_SD.ForeColor = colorOK
                     Case Else
-                        lbl_TF_RSD.ForeColor = Color.Red
-                        lbl_TF_SD.ForeColor = Color.Red
+                        lbl_TF_RSD.ForeColor = colorBad
+                        lbl_TF_SD.ForeColor = colorBad
                 End Select
 
                 ' Fixes Issue #1 by checking for numeric values
@@ -192,33 +201,33 @@ Public Class frmMain
 
                 Select Case Math.Abs(dtSetpoint - driftTube)
                     Case <= dtError
-                        lbl_DTPressure.ForeColor = Color.LightGreen
+                        lbl_DTPressure.ForeColor = colorGood
                     Case <= dtError * 2
-                        lbl_DTPressure.ForeColor = Color.Orange
+                        lbl_DTPressure.ForeColor = colorOK
                     Case > dtError
-                        lbl_DTPressure.ForeColor = Color.Red
+                        lbl_DTPressure.ForeColor = colorBad
                 End Select
 
                 Select Case Math.Abs(tfSetpoint - trapFunnel)
                     Case <= tfError
-                        lbl_TFPressure.ForeColor = Color.LightGreen
+                        lbl_TFPressure.ForeColor = colorGood
                     Case <= tfError * 2
-                        lbl_TFPressure.ForeColor = Color.Orange
+                        lbl_TFPressure.ForeColor = colorOK
                     Case > tfError
-                        lbl_TFPressure.ForeColor = Color.Red
+                        lbl_TFPressure.ForeColor = colorBad
                 End Select
 
                 Select Case Math.Abs(deltaSetpoint - delta)
                     Case <= deltaError
-                        lbl_DeltaPressure.ForeColor = Color.LightGreen
+                        lbl_DeltaPressure.ForeColor = colorGood
                     Case <= deltaError * 2
-                        lbl_DeltaPressure.ForeColor = Color.Orange
+                        lbl_DeltaPressure.ForeColor = colorOK
                     Case > deltaError
-                        lbl_DeltaPressure.ForeColor = Color.Red
+                        lbl_DeltaPressure.ForeColor = colorBad
                 End Select
 
             End If
-            Else
+        Else
             ' If leak test has been selected then the number of readings is 2500 (approx 15 minutes as per documentation)
             If totalReadings <= 2500 Then
                 chart_Data.ChartAreas(0).AxisX.Minimum = 0
@@ -231,20 +240,20 @@ Public Class frmMain
             ' Update label colors based on documentation
             Select Case driftTube
                 Case <= 0.05
-                    lbl_DTPressure.ForeColor = Color.LightGreen
+                    lbl_DTPressure.ForeColor = colorGood
                 Case <= 0.075
-                    lbl_DTPressure.ForeColor = Color.Orange
+                    lbl_DTPressure.ForeColor = colorOK
                 Case Else
-                    lbl_DTPressure.ForeColor = Color.Red
+                    lbl_DTPressure.ForeColor = colorBad
             End Select
 
             Select Case trapFunnel
                 Case <= 0.05
-                    lbl_TFPressure.ForeColor = Color.LightGreen
+                    lbl_TFPressure.ForeColor = colorGood
                 Case <= 0.075
-                    lbl_TFPressure.ForeColor = Color.Orange
+                    lbl_TFPressure.ForeColor = colorOK
                 Case Else
-                    lbl_TFPressure.ForeColor = Color.Red
+                    lbl_TFPressure.ForeColor = colorBad
             End Select
 
         End If
@@ -288,10 +297,9 @@ Public Class frmMain
                         Exit Do
                     Else
                         If _acquisition = True Then
-
+                            ' Parse the data using the parseData function
+                            Me.Invoke(Sub() parseData(incoming.ToString))
                         End If
-                        ' Parse the data using the parseData function
-                        Me.Invoke(Sub() parseData(incoming.ToString))
                     End If
                 Else
                     selectedPort.Close()
@@ -340,54 +348,9 @@ Public Class frmMain
                 Exit Sub
             End If
 
-            ReDim recentDT(num_DataPoints.Value - 1)
-            ReDim recentTF(num_DataPoints.Value - 1)
-            ReDim recentDelta(num_DataPoints.Value - 1)
-
-            ' Handle UI
-            lbl_DT_RSD.Visible = False
-            lbl_TF_RSD.Visible = False
-            lbl_PercentSign.Visible = False
-            lbl_mTorr.Visible = False
-            lbl_Delta_RSD.Visible = False
-            lbl_Delta_SD.Visible = False
-            lbl_DT_SD.Visible = False
-            lbl_TF_SD.Visible = False
-            lbl_PlusMinus.Text = "Torr"
-
-            lbl_DTPressure.ForeColor = Color.Black
-            lbl_TFPressure.ForeColor = Color.Black
-            lbl_DeltaPressure.ForeColor = Color.Black
-
-            ' Chart setup
-            With chart_Data.Series
-                .Clear()
-                .Add("Drift Tube Pressure")
-                .Add("Trap Funnel Pressure")
-            End With
-
-            With chart_Data.Series("Drift Tube Pressure")
-                .ChartType = DataVisualization.Charting.SeriesChartType.FastLine
-                .BorderWidth = 3
-            End With
-
-            With chart_Data.Series("Trap Funnel Pressure")
-                .ChartType = DataVisualization.Charting.SeriesChartType.FastLine
-                .BorderWidth = 3
-            End With
-
-            With chart_Data.ChartAreas(0)
-                .AxisY.LabelStyle.Format = "0.0"
-                .AxisX.LabelStyle.Format = "0"
-                .AxisX.MajorGrid.LineDashStyle = DataVisualization.Charting.ChartDashStyle.NotSet
-                .AxisY.MajorGrid.LineDashStyle = DataVisualization.Charting.ChartDashStyle.Dash
-            End With
-
             ' Set up continue and connect flags and get ready to start receiving data
             _continue = True
             _everConnected = False
-            currentReading = 0
-            totalReadings = 0
             serialPort = comboBox_SerialPorts.Text
             theThread = New Threading.Thread(AddressOf readCOMData)
             theThread.Start()
@@ -395,18 +358,9 @@ Public Class frmMain
             ' Change UI to accept stats
             btn_Connection.Text = "Disconnect"
             btn_AcquisitionStartStop.Enabled = True
-            num_DataPoints.Enabled = False
-            lbl_DataPoints.Enabled = False
             comboBox_SerialPorts.Enabled = False
-            chkBox_LeakTest.Enabled = False
-            lbl_SecsConverter.Enabled = False
         Else
             ' Ensure that the IM is disconnected so that we can reconnect later
-            Dim messageBoxAnswer As Integer
-            messageBoxAnswer = MessageBox.Show(Me, "Are you sure you want to disconnect, if you reconnect then you will need to wait until there are enough data points to evaluate.", "Under Pressure - Disconnect from IM", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
-            If messageBoxAnswer = DialogResult.No Then
-                Exit Sub
-            End If
             DisconnectIM()
         End If
 
@@ -418,11 +372,8 @@ Public Class frmMain
         btn_Connection.Text = "Connect"
         btn_AcquisitionStartStop.Text = "Start Acquisition"
         btn_AcquisitionStartStop.Enabled = False
-        num_DataPoints.Enabled = True
-        lbl_DataPoints.Enabled = True
+        _acquisition = False
         comboBox_SerialPorts.Enabled = True
-        chkBox_LeakTest.Enabled = True
-        lbl_SecsConverter.Enabled = True
     End Sub
 
     ' Sub to parse data
@@ -721,12 +672,73 @@ Public Class frmMain
     Private Sub btn_AcquisitionStartStop_Click(sender As Object, e As EventArgs) Handles btn_AcquisitionStartStop.Click
 
         If _acquisition Then
+            Dim messageBoxAnswer As Integer
+            messageBoxAnswer = MessageBox.Show(Me, "Are you sure you want to stop acquisition, if you start acquisition again then you will need to wait until there are enough data points to evaluate.", "Under Pressure - Disconnect from IM", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
+            If messageBoxAnswer = DialogResult.No Then
+                Exit Sub
+            End If
             _acquisition = False
             btn_AcquisitionStartStop.Text = "Start Acquisition"
+            num_DataPoints.Enabled = True
+            lbl_DataPoints.Enabled = True
+            chkBox_LeakTest.Enabled = True
+            lbl_SecsConverter.Enabled = True
+            btn_Connection.Enabled = True
         Else
+            btn_Connection.Enabled = False
             startTimeAcq = DateTime.UtcNow
+            currentReading = 0
+            totalReadings = 0
+            num_DataPoints.Enabled = False
+            lbl_DataPoints.Enabled = False
+            lbl_SecsConverter.Enabled = False
+            chkBox_LeakTest.Enabled = False
             _acquisition = True
             btn_AcquisitionStartStop.Text = "Stop Acquisition"
+
+            ReDim recentDT(num_DataPoints.Value - 1)
+            ReDim recentTF(num_DataPoints.Value - 1)
+            ReDim recentDelta(num_DataPoints.Value - 1)
+
+            ' Handle UI
+            lbl_DT_RSD.Visible = False
+            lbl_TF_RSD.Visible = False
+            lbl_PercentSign.Visible = False
+            lbl_mTorr.Visible = False
+            lbl_Delta_RSD.Visible = False
+            lbl_Delta_SD.Visible = False
+            lbl_DT_SD.Visible = False
+            lbl_TF_SD.Visible = False
+            lbl_PlusMinus.Text = "Torr"
+
+            lbl_DTPressure.ForeColor = Color.Black
+            lbl_TFPressure.ForeColor = Color.Black
+            lbl_DeltaPressure.ForeColor = Color.Black
+
+            ' Chart setup
+            With chart_Data.Series
+                .Clear()
+                .Add("Drift Tube Pressure")
+                .Add("Trap Funnel Pressure")
+            End With
+
+            With chart_Data.Series("Drift Tube Pressure")
+                .ChartType = DataVisualization.Charting.SeriesChartType.FastLine
+                .BorderWidth = 3
+            End With
+
+            With chart_Data.Series("Trap Funnel Pressure")
+                .ChartType = DataVisualization.Charting.SeriesChartType.FastLine
+                .BorderWidth = 3
+            End With
+
+            With chart_Data.ChartAreas(0)
+                .AxisY.LabelStyle.Format = "0.0"
+                .AxisX.LabelStyle.Format = "0"
+                .AxisX.MajorGrid.LineDashStyle = DataVisualization.Charting.ChartDashStyle.NotSet
+                .AxisY.MajorGrid.LineDashStyle = DataVisualization.Charting.ChartDashStyle.Dash
+            End With
+
         End If
     End Sub
 End Class

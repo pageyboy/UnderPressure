@@ -113,6 +113,7 @@ Partial Class frmMain
         Me.DTPressure = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.TFPressure = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.DiffPressure = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.lbl_DataPointWarning = New System.Windows.Forms.Label()
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         CType(Me.chart_Data, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -236,7 +237,7 @@ Partial Class frmMain
         'num_DataPoints
         '
         Me.num_DataPoints.Font = New System.Drawing.Font("Arial monospaced for SAP", 26.25!)
-        Me.num_DataPoints.Location = New System.Drawing.Point(757, 12)
+        Me.num_DataPoints.Location = New System.Drawing.Point(772, 64)
         Me.num_DataPoints.Maximum = New Decimal(New Integer() {1500, 0, 0, 0})
         Me.num_DataPoints.Minimum = New Decimal(New Integer() {25, 0, 0, 0})
         Me.num_DataPoints.Name = "num_DataPoints"
@@ -248,7 +249,7 @@ Partial Class frmMain
         '
         Me.lbl_DataPoints.AutoSize = True
         Me.lbl_DataPoints.Font = New System.Drawing.Font("Arial monospaced for SAP", 15.0!)
-        Me.lbl_DataPoints.Location = New System.Drawing.Point(449, 23)
+        Me.lbl_DataPoints.Location = New System.Drawing.Point(464, 75)
         Me.lbl_DataPoints.Name = "lbl_DataPoints"
         Me.lbl_DataPoints.Size = New System.Drawing.Size(298, 23)
         Me.lbl_DataPoints.TabIndex = 25
@@ -962,7 +963,7 @@ Partial Class frmMain
         '
         Me.lbl_SecsConverter.AutoSize = True
         Me.lbl_SecsConverter.Font = New System.Drawing.Font("Arial monospaced for SAP", 15.0!)
-        Me.lbl_SecsConverter.Location = New System.Drawing.Point(868, 23)
+        Me.lbl_SecsConverter.Location = New System.Drawing.Point(883, 75)
         Me.lbl_SecsConverter.Name = "lbl_SecsConverter"
         Me.lbl_SecsConverter.Size = New System.Drawing.Size(178, 23)
         Me.lbl_SecsConverter.TabIndex = 27
@@ -1034,7 +1035,7 @@ Partial Class frmMain
         '
         'DataPointsSinceConnection
         '
-        Me.DataPointsSinceConnection.HeaderText = "Data Points Since Connection"
+        Me.DataPointsSinceConnection.HeaderText = "Data Points Since Acquisition"
         Me.DataPointsSinceConnection.Name = "DataPointsSinceConnection"
         Me.DataPointsSinceConnection.ReadOnly = True
         Me.DataPointsSinceConnection.Width = 150
@@ -1060,13 +1061,24 @@ Partial Class frmMain
         Me.DiffPressure.ReadOnly = True
         Me.DiffPressure.Width = 150
         '
+        'lbl_DataPointWarning
+        '
+        Me.lbl_DataPointWarning.Font = New System.Drawing.Font("Arial monospaced for SAP", 15.0!)
+        Me.lbl_DataPointWarning.Location = New System.Drawing.Point(976, 106)
+        Me.lbl_DataPointWarning.Name = "lbl_DataPointWarning"
+        Me.lbl_DataPointWarning.RightToLeft = System.Windows.Forms.RightToLeft.No
+        Me.lbl_DataPointWarning.Size = New System.Drawing.Size(446, 33)
+        Me.lbl_DataPointWarning.TabIndex = 33
+        Me.lbl_DataPointWarning.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        '
         'frmMain
         '
         Me.AcceptButton = Me.btn_Connection
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
-        Me.ClientSize = New System.Drawing.Size(1434, 812)
+        Me.ClientSize = New System.Drawing.Size(1434, 807)
+        Me.Controls.Add(Me.lbl_DataPointWarning)
         Me.Controls.Add(Me.btn_AcquisitionStartStop)
         Me.Controls.Add(Me.lbl_Developer)
         Me.Controls.Add(Me.lbl_Atribution)
@@ -1080,8 +1092,8 @@ Partial Class frmMain
         Me.Controls.Add(Me.btn_Connection)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
-        Me.MaximumSize = New System.Drawing.Size(1450, 850)
-        Me.MinimumSize = New System.Drawing.Size(1450, 850)
+        Me.MaximumSize = New System.Drawing.Size(1450, 845)
+        Me.MinimumSize = New System.Drawing.Size(1450, 845)
         Me.Name = "frmMain"
         Me.Text = "Under Pressure - Drift Tube Pressure Monitor"
         Me.TabControl1.ResumeLayout(False)
@@ -1192,4 +1204,5 @@ Partial Class frmMain
     Friend WithEvents DTPressure As DataGridViewTextBoxColumn
     Friend WithEvents TFPressure As DataGridViewTextBoxColumn
     Friend WithEvents DiffPressure As DataGridViewTextBoxColumn
+    Friend WithEvents lbl_DataPointWarning As Label
 End Class
