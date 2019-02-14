@@ -32,12 +32,6 @@ Partial Class frmMain
         Me.chart_Data = New System.Windows.Forms.DataVisualization.Charting.Chart()
         Me.TabPage2 = New System.Windows.Forms.TabPage()
         Me.dgv_Data = New System.Windows.Forms.DataGridView()
-        Me.TimeDate = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.mSecs = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.DataPointsSinceConnection = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.DTPressure = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.TFPressure = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.DiffPressure = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.TabPage3 = New System.Windows.Forms.TabPage()
         Me.txtBox_Hyperterminal = New System.Windows.Forms.TextBox()
         Me.comboBox_SerialPorts = New System.Windows.Forms.ComboBox()
@@ -112,6 +106,13 @@ Partial Class frmMain
         Me.lbl_Atribution = New System.Windows.Forms.LinkLabel()
         Me.lbl_Developer = New System.Windows.Forms.LinkLabel()
         Me.btn_AcquisitionStartStop = New System.Windows.Forms.Button()
+        Me.TimeDate = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.mSecs = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.mSecsAcq = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.DataPointsSinceConnection = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.DTPressure = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.TFPressure = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.DiffPressure = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         CType(Me.chart_Data, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -182,7 +183,7 @@ Partial Class frmMain
         Me.TabPage2.Location = New System.Drawing.Point(4, 29)
         Me.TabPage2.Name = "TabPage2"
         Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage2.Size = New System.Drawing.Size(1385, 241)
+        Me.TabPage2.Size = New System.Drawing.Size(1402, 241)
         Me.TabPage2.TabIndex = 1
         Me.TabPage2.Text = "Data"
         Me.TabPage2.UseVisualStyleBackColor = True
@@ -193,55 +194,13 @@ Partial Class frmMain
         Me.dgv_Data.AllowUserToDeleteRows = False
         Me.dgv_Data.AllowUserToResizeRows = False
         Me.dgv_Data.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.dgv_Data.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.TimeDate, Me.mSecs, Me.DataPointsSinceConnection, Me.DTPressure, Me.TFPressure, Me.DiffPressure})
+        Me.dgv_Data.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.TimeDate, Me.mSecs, Me.mSecsAcq, Me.DataPointsSinceConnection, Me.DTPressure, Me.TFPressure, Me.DiffPressure})
         Me.dgv_Data.Dock = System.Windows.Forms.DockStyle.Fill
         Me.dgv_Data.Location = New System.Drawing.Point(3, 3)
         Me.dgv_Data.Name = "dgv_Data"
         Me.dgv_Data.ReadOnly = True
-        Me.dgv_Data.Size = New System.Drawing.Size(1379, 235)
+        Me.dgv_Data.Size = New System.Drawing.Size(1396, 235)
         Me.dgv_Data.TabIndex = 0
-        '
-        'TimeDate
-        '
-        Me.TimeDate.HeaderText = "Date & Time"
-        Me.TimeDate.Name = "TimeDate"
-        Me.TimeDate.ReadOnly = True
-        Me.TimeDate.Width = 200
-        '
-        'mSecs
-        '
-        Me.mSecs.HeaderText = "Time Since Program Start (mSeconds)"
-        Me.mSecs.Name = "mSecs"
-        Me.mSecs.ReadOnly = True
-        Me.mSecs.Width = 150
-        '
-        'DataPointsSinceConnection
-        '
-        Me.DataPointsSinceConnection.HeaderText = "Data Points Since Connection"
-        Me.DataPointsSinceConnection.Name = "DataPointsSinceConnection"
-        Me.DataPointsSinceConnection.ReadOnly = True
-        Me.DataPointsSinceConnection.Width = 150
-        '
-        'DTPressure
-        '
-        Me.DTPressure.HeaderText = "Drift Tube Pressure"
-        Me.DTPressure.Name = "DTPressure"
-        Me.DTPressure.ReadOnly = True
-        Me.DTPressure.Width = 150
-        '
-        'TFPressure
-        '
-        Me.TFPressure.HeaderText = "Trap Funnel Pressure"
-        Me.TFPressure.Name = "TFPressure"
-        Me.TFPressure.ReadOnly = True
-        Me.TFPressure.Width = 150
-        '
-        'DiffPressure
-        '
-        Me.DiffPressure.HeaderText = "Delta Pressure"
-        Me.DiffPressure.Name = "DiffPressure"
-        Me.DiffPressure.ReadOnly = True
-        Me.DiffPressure.Width = 150
         '
         'TabPage3
         '
@@ -1043,6 +1002,7 @@ Partial Class frmMain
         '
         'btn_AcquisitionStartStop
         '
+        Me.btn_AcquisitionStartStop.Enabled = False
         Me.btn_AcquisitionStartStop.Font = New System.Drawing.Font("Arial monospaced for SAP", 26.25!)
         Me.btn_AcquisitionStartStop.Location = New System.Drawing.Point(12, 66)
         Me.btn_AcquisitionStartStop.Name = "btn_AcquisitionStartStop"
@@ -1050,6 +1010,55 @@ Partial Class frmMain
         Me.btn_AcquisitionStartStop.TabIndex = 32
         Me.btn_AcquisitionStartStop.Text = "Start Acquisition"
         Me.btn_AcquisitionStartStop.UseVisualStyleBackColor = True
+        '
+        'TimeDate
+        '
+        Me.TimeDate.HeaderText = "Date & Time"
+        Me.TimeDate.Name = "TimeDate"
+        Me.TimeDate.ReadOnly = True
+        Me.TimeDate.Width = 200
+        '
+        'mSecs
+        '
+        Me.mSecs.HeaderText = "Time Since Program Start (mSeconds)"
+        Me.mSecs.Name = "mSecs"
+        Me.mSecs.ReadOnly = True
+        Me.mSecs.Width = 150
+        '
+        'mSecsAcq
+        '
+        Me.mSecsAcq.HeaderText = "Time Since Acq Start"
+        Me.mSecsAcq.Name = "mSecsAcq"
+        Me.mSecsAcq.ReadOnly = True
+        Me.mSecsAcq.Width = 150
+        '
+        'DataPointsSinceConnection
+        '
+        Me.DataPointsSinceConnection.HeaderText = "Data Points Since Connection"
+        Me.DataPointsSinceConnection.Name = "DataPointsSinceConnection"
+        Me.DataPointsSinceConnection.ReadOnly = True
+        Me.DataPointsSinceConnection.Width = 150
+        '
+        'DTPressure
+        '
+        Me.DTPressure.HeaderText = "Drift Tube Pressure"
+        Me.DTPressure.Name = "DTPressure"
+        Me.DTPressure.ReadOnly = True
+        Me.DTPressure.Width = 150
+        '
+        'TFPressure
+        '
+        Me.TFPressure.HeaderText = "Trap Funnel Pressure"
+        Me.TFPressure.Name = "TFPressure"
+        Me.TFPressure.ReadOnly = True
+        Me.TFPressure.Width = 150
+        '
+        'DiffPressure
+        '
+        Me.DiffPressure.HeaderText = "Delta Pressure"
+        Me.DiffPressure.Name = "DiffPressure"
+        Me.DiffPressure.ReadOnly = True
+        Me.DiffPressure.Width = 150
         '
         'frmMain
         '
@@ -1175,11 +1184,12 @@ Partial Class frmMain
     Friend WithEvents Label11 As Label
     Friend WithEvents Label10 As Label
     Friend WithEvents Label8 As Label
+    Friend WithEvents btn_AcquisitionStartStop As Button
     Friend WithEvents TimeDate As DataGridViewTextBoxColumn
     Friend WithEvents mSecs As DataGridViewTextBoxColumn
+    Friend WithEvents mSecsAcq As DataGridViewTextBoxColumn
     Friend WithEvents DataPointsSinceConnection As DataGridViewTextBoxColumn
     Friend WithEvents DTPressure As DataGridViewTextBoxColumn
     Friend WithEvents TFPressure As DataGridViewTextBoxColumn
     Friend WithEvents DiffPressure As DataGridViewTextBoxColumn
-    Friend WithEvents btn_AcquisitionStartStop As Button
 End Class

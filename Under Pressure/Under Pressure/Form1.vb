@@ -12,7 +12,9 @@ Public Class frmMain
     Inherits Form
 
     Dim mTime As Long
+    Dim mTimeAcq As Long
     Dim startTime As DateTime
+    Dim startTimeAcq As DateTime
 
     Dim recentDT() As Single
     Dim recentTF() As Single
@@ -60,7 +62,8 @@ Public Class frmMain
 
         ' Add data into DGV
         mTime = (DateTime.UtcNow - startTime).TotalMilliseconds
-        dgv_Data.Rows.Add(DateTime.Now.ToString("dd MMM yyyy hh:mm:ss.fff tt"), mTime, totalReadings + 1, Format(driftTube, "0.0000"), Format(trapFunnel, "0.0000"), Format(delta, "0.0000"))
+        mTimeAcq = (DateTime.UtcNow - startTimeAcq).TotalMilliseconds
+        dgv_Data.Rows.Add(DateTime.Now.ToString("dd MMM yyyy hh:mm:ss.fff tt"), mTime, mTimeAcq, totalReadings + 1, Format(driftTube, "0.0000"), Format(trapFunnel, "0.0000"), Format(delta, "0.0000"))
 
         ' Update chart
         chart_Data.Series("Drift Tube Pressure").Points.AddXY(totalReadings, driftTube)
@@ -391,6 +394,7 @@ Public Class frmMain
 
             ' Change UI to accept stats
             btn_Connection.Text = "Disconnect"
+            btn_AcquisitionStartStop.Enabled = True
             num_DataPoints.Enabled = False
             lbl_DataPoints.Enabled = False
             comboBox_SerialPorts.Enabled = False
@@ -412,6 +416,8 @@ Public Class frmMain
     Sub DisconnectIM()
         _continue = False
         btn_Connection.Text = "Connect"
+        btn_AcquisitionStartStop.Text = "Start Acquisition"
+        btn_AcquisitionStartStop.Enabled = False
         num_DataPoints.Enabled = True
         lbl_DataPoints.Enabled = True
         comboBox_SerialPorts.Enabled = True
@@ -713,10 +719,12 @@ Public Class frmMain
 
     ' Fixes Issue #3 by providing button to start/stop data acquisition
     Private Sub btn_AcquisitionStartStop_Click(sender As Object, e As EventArgs) Handles btn_AcquisitionStartStop.Click
+
         If _acquisition Then
             _acquisition = False
             btn_AcquisitionStartStop.Text = "Start Acquisition"
         Else
+            startTimeAcq = DateTime.UtcNow
             _acquisition = True
             btn_AcquisitionStartStop.Text = "Stop Acquisition"
         End If
