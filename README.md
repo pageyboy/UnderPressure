@@ -4,7 +4,13 @@ Under Pressure is a lightweight application to facilitate monitoring of the drif
 
 ## Background
 
+The current method of monitoring drift gas pressures is a little hit and miss. A hyperterminal connection is made and the stream of data in the hyperterminal window is eyeballed.
 
+More exact measurements can be performed by taking the data offline and exporting to CSV followed by manually parsing the data and creating the statistics or graphs as required.
+
+![Image](/UnderPressure/Readme Images/Hyperterminal.png)
+
+This is labour intensive and does not allow for an online live view resulting in an iterative process of adjusting and checking.
 
 ## Getting Started
 
