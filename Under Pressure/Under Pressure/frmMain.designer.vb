@@ -32,6 +32,13 @@ Partial Class frmMain
         Me.chart_Data = New System.Windows.Forms.DataVisualization.Charting.Chart()
         Me.TabPage2 = New System.Windows.Forms.TabPage()
         Me.dgv_Data = New System.Windows.Forms.DataGridView()
+        Me.TimeDate = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.mSecs = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.mSecsAcq = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.DataPointsSinceConnection = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.DTPressure = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.TFPressure = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.DiffPressure = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.TabPage3 = New System.Windows.Forms.TabPage()
         Me.txtBox_Hyperterminal = New System.Windows.Forms.TextBox()
         Me.comboBox_SerialPorts = New System.Windows.Forms.ComboBox()
@@ -106,14 +113,8 @@ Partial Class frmMain
         Me.lbl_Atribution = New System.Windows.Forms.LinkLabel()
         Me.lbl_Developer = New System.Windows.Forms.LinkLabel()
         Me.btn_AcquisitionStartStop = New System.Windows.Forms.Button()
-        Me.TimeDate = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.mSecs = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.mSecsAcq = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.DataPointsSinceConnection = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.DTPressure = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.TFPressure = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.DiffPressure = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.lbl_DataPointWarning = New System.Windows.Forms.Label()
+        Me.lbl_Github = New System.Windows.Forms.LinkLabel()
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         CType(Me.chart_Data, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -203,13 +204,62 @@ Partial Class frmMain
         Me.dgv_Data.Size = New System.Drawing.Size(1396, 235)
         Me.dgv_Data.TabIndex = 0
         '
+        'TimeDate
+        '
+        Me.TimeDate.HeaderText = "Date & Time"
+        Me.TimeDate.Name = "TimeDate"
+        Me.TimeDate.ReadOnly = True
+        Me.TimeDate.Width = 200
+        '
+        'mSecs
+        '
+        Me.mSecs.HeaderText = "Time Since Program Start (mSeconds)"
+        Me.mSecs.Name = "mSecs"
+        Me.mSecs.ReadOnly = True
+        Me.mSecs.Width = 150
+        '
+        'mSecsAcq
+        '
+        Me.mSecsAcq.HeaderText = "Time Since Acq Start"
+        Me.mSecsAcq.Name = "mSecsAcq"
+        Me.mSecsAcq.ReadOnly = True
+        Me.mSecsAcq.Width = 150
+        '
+        'DataPointsSinceConnection
+        '
+        Me.DataPointsSinceConnection.HeaderText = "Data Points Since Acquisition"
+        Me.DataPointsSinceConnection.Name = "DataPointsSinceConnection"
+        Me.DataPointsSinceConnection.ReadOnly = True
+        Me.DataPointsSinceConnection.Width = 150
+        '
+        'DTPressure
+        '
+        Me.DTPressure.HeaderText = "Drift Tube Pressure"
+        Me.DTPressure.Name = "DTPressure"
+        Me.DTPressure.ReadOnly = True
+        Me.DTPressure.Width = 150
+        '
+        'TFPressure
+        '
+        Me.TFPressure.HeaderText = "Trap Funnel Pressure"
+        Me.TFPressure.Name = "TFPressure"
+        Me.TFPressure.ReadOnly = True
+        Me.TFPressure.Width = 150
+        '
+        'DiffPressure
+        '
+        Me.DiffPressure.HeaderText = "Delta Pressure"
+        Me.DiffPressure.Name = "DiffPressure"
+        Me.DiffPressure.ReadOnly = True
+        Me.DiffPressure.Width = 150
+        '
         'TabPage3
         '
         Me.TabPage3.Controls.Add(Me.txtBox_Hyperterminal)
         Me.TabPage3.Location = New System.Drawing.Point(4, 29)
         Me.TabPage3.Name = "TabPage3"
         Me.TabPage3.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage3.Size = New System.Drawing.Size(1385, 241)
+        Me.TabPage3.Size = New System.Drawing.Size(1402, 241)
         Me.TabPage3.TabIndex = 2
         Me.TabPage3.Text = "Hyperterminal"
         Me.TabPage3.UseVisualStyleBackColor = True
@@ -221,7 +271,7 @@ Partial Class frmMain
         Me.txtBox_Hyperterminal.Multiline = True
         Me.txtBox_Hyperterminal.Name = "txtBox_Hyperterminal"
         Me.txtBox_Hyperterminal.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-        Me.txtBox_Hyperterminal.Size = New System.Drawing.Size(1379, 235)
+        Me.txtBox_Hyperterminal.Size = New System.Drawing.Size(1396, 235)
         Me.txtBox_Hyperterminal.TabIndex = 0
         '
         'comboBox_SerialPorts
@@ -458,7 +508,7 @@ Partial Class frmMain
         Me.TabPage5.Location = New System.Drawing.Point(4, 29)
         Me.TabPage5.Name = "TabPage5"
         Me.TabPage5.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage5.Size = New System.Drawing.Size(1389, 348)
+        Me.TabPage5.Size = New System.Drawing.Size(1402, 348)
         Me.TabPage5.TabIndex = 1
         Me.TabPage5.Text = "Setpoints"
         '
@@ -1012,55 +1062,6 @@ Partial Class frmMain
         Me.btn_AcquisitionStartStop.Text = "Start Acquisition"
         Me.btn_AcquisitionStartStop.UseVisualStyleBackColor = True
         '
-        'TimeDate
-        '
-        Me.TimeDate.HeaderText = "Date & Time"
-        Me.TimeDate.Name = "TimeDate"
-        Me.TimeDate.ReadOnly = True
-        Me.TimeDate.Width = 200
-        '
-        'mSecs
-        '
-        Me.mSecs.HeaderText = "Time Since Program Start (mSeconds)"
-        Me.mSecs.Name = "mSecs"
-        Me.mSecs.ReadOnly = True
-        Me.mSecs.Width = 150
-        '
-        'mSecsAcq
-        '
-        Me.mSecsAcq.HeaderText = "Time Since Acq Start"
-        Me.mSecsAcq.Name = "mSecsAcq"
-        Me.mSecsAcq.ReadOnly = True
-        Me.mSecsAcq.Width = 150
-        '
-        'DataPointsSinceConnection
-        '
-        Me.DataPointsSinceConnection.HeaderText = "Data Points Since Acquisition"
-        Me.DataPointsSinceConnection.Name = "DataPointsSinceConnection"
-        Me.DataPointsSinceConnection.ReadOnly = True
-        Me.DataPointsSinceConnection.Width = 150
-        '
-        'DTPressure
-        '
-        Me.DTPressure.HeaderText = "Drift Tube Pressure"
-        Me.DTPressure.Name = "DTPressure"
-        Me.DTPressure.ReadOnly = True
-        Me.DTPressure.Width = 150
-        '
-        'TFPressure
-        '
-        Me.TFPressure.HeaderText = "Trap Funnel Pressure"
-        Me.TFPressure.Name = "TFPressure"
-        Me.TFPressure.ReadOnly = True
-        Me.TFPressure.Width = 150
-        '
-        'DiffPressure
-        '
-        Me.DiffPressure.HeaderText = "Delta Pressure"
-        Me.DiffPressure.Name = "DiffPressure"
-        Me.DiffPressure.ReadOnly = True
-        Me.DiffPressure.Width = 150
-        '
         'lbl_DataPointWarning
         '
         Me.lbl_DataPointWarning.Font = New System.Drawing.Font("Arial monospaced for SAP", 15.0!)
@@ -1071,13 +1072,25 @@ Partial Class frmMain
         Me.lbl_DataPointWarning.TabIndex = 33
         Me.lbl_DataPointWarning.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
+        'lbl_Github
+        '
+        Me.lbl_Github.Location = New System.Drawing.Point(955, 810)
+        Me.lbl_Github.Name = "lbl_Github"
+        Me.lbl_Github.RightToLeft = System.Windows.Forms.RightToLeft.No
+        Me.lbl_Github.Size = New System.Drawing.Size(447, 13)
+        Me.lbl_Github.TabIndex = 34
+        Me.lbl_Github.TabStop = True
+        Me.lbl_Github.Text = "Github Placeholder"
+        Me.lbl_Github.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        '
         'frmMain
         '
         Me.AcceptButton = Me.btn_Connection
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
-        Me.ClientSize = New System.Drawing.Size(1434, 807)
+        Me.ClientSize = New System.Drawing.Size(1434, 832)
+        Me.Controls.Add(Me.lbl_Github)
         Me.Controls.Add(Me.lbl_DataPointWarning)
         Me.Controls.Add(Me.btn_AcquisitionStartStop)
         Me.Controls.Add(Me.lbl_Developer)
@@ -1092,8 +1105,8 @@ Partial Class frmMain
         Me.Controls.Add(Me.btn_Connection)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
-        Me.MaximumSize = New System.Drawing.Size(1450, 845)
-        Me.MinimumSize = New System.Drawing.Size(1450, 845)
+        Me.MaximumSize = New System.Drawing.Size(1450, 870)
+        Me.MinimumSize = New System.Drawing.Size(1450, 870)
         Me.Name = "frmMain"
         Me.Text = "Under Pressure - Drift Tube Pressure Monitor"
         Me.TabControl1.ResumeLayout(False)
@@ -1205,4 +1218,5 @@ Partial Class frmMain
     Friend WithEvents TFPressure As DataGridViewTextBoxColumn
     Friend WithEvents DiffPressure As DataGridViewTextBoxColumn
     Friend WithEvents lbl_DataPointWarning As Label
+    Friend WithEvents lbl_Github As LinkLabel
 End Class

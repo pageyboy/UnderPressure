@@ -9,10 +9,10 @@ Imports System.Runtime.InteropServices
 ' Review the values of the assembly attributes
 
 <Assembly: AssemblyTitle("Under Pressure")>
-<Assembly: AssemblyDescription("")>
-<Assembly: AssemblyCompany("Microsoft")>
+<Assembly: AssemblyDescription("Drift Gas Pressure Monitor for the Agilent G6560X")>
+<Assembly: AssemblyCompany("Agilent Technologies")>
 <Assembly: AssemblyProduct("Under Pressure")>
-<Assembly: AssemblyCopyright("Copyright © Microsoft 2018")>
+<Assembly: AssemblyCopyright("Copyright © Agilent Technologies 2018")>
 <Assembly: AssemblyTrademark("")>
 
 <Assembly: ComVisible(False)>
@@ -31,5 +31,5 @@ Imports System.Runtime.InteropServices
 ' by using the '*' as shown below:
 ' <Assembly: AssemblyVersion("1.0.*")>
 
-<Assembly: AssemblyVersion("1.0.0.0")>
+<Assembly: AssemblyVersion("1.1.0.0")>
 <Assembly: AssemblyFileVersion("1.0.0.0")>

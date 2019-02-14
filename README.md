@@ -47,4 +47,9 @@ The file that is downloaded may be quarantined by your AntiVirus and so you may 
 3. Click the **Start Acquisition** button to begin acquiring and storing the instrument output.
 4. Navigate to the **Measure** tab to view the output via statistics, graphs or colours. Green = Good, Orange = Getting Close, Red = Much more adjustment required.
 5. The table on the **Data** tab on the **Measure** tab can easily be exported into excel by selecting, copying and pasting.
-6. A **leak test** has been included for troubleshooting drift gas instability. When the Leak Test checkbox is selected a walk through guide is displayed describing how to set the instrument up to perform the leak test. The set points are automatically updated and the data received is evaluated and colour coded as per the following: Green = Acceptable Leak (&#8804; 50 mTorr); Orange = Minor Leak or Capillary Cap is fitted (50 - 75 mTorr); Red = Major Leak (>75 mTorr).
+6. A **leak test** has been included for troubleshooting drift gas instability. When the Leak Test checkbox is selected a walk through guide is displayed describing how to set the instrument up to perform the leak test. The set points are automatically updated and the data received is evaluated and colour coded as per the following:
+* Green = Acceptable Leak (&#8804; 50 mTorr)
+* Orange = Minor Leak or Capillary Cap is fitted (50 - 75 mTorr)
+* Red = Major Leak (>75 mTorr).
+
+![Leak test on screen information](https://raw.githubusercontent.com/pageyboy/UnderPressure/master/Readme%20Images/LeakTest.png)

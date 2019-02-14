@@ -426,6 +426,10 @@ Public Class frmMain
         lbl_Developer.Text = "Made in UK by Chris Page"
         lbl_Developer.Links.Add(14, 10, "mailto: chris.page@agilent.com")
 
+        lbl_Github.Text = "Visit Github for the latest updates and information"
+        lbl_Github.Links.Add(6, 6, "https://github.com/pageyboy/UnderPressure")
+
+
     End Sub
 
     ' Sub to handle form showing.
@@ -441,6 +445,11 @@ Public Class frmMain
     End Sub
 
     Private Sub lbl_Developer_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles lbl_Developer.LinkClicked
+        Dim target As String = Convert.ToString(e.Link.LinkData)
+        System.Diagnostics.Process.Start(target)
+    End Sub
+
+    Private Sub lbl_Github_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles lbl_Github.LinkClicked
         Dim target As String = Convert.ToString(e.Link.LinkData)
         System.Diagnostics.Process.Start(target)
     End Sub
