@@ -32,6 +32,7 @@ Public Class frmMain
     Dim _continue As Boolean = False
     Dim _everConnected As Boolean = False
     Dim serialPort As String
+    Dim _acquisition As Boolean = False
 
     Dim _runEvents = False
 
@@ -283,6 +284,9 @@ Public Class frmMain
                     If incoming Is Nothing Then
                         Exit Do
                     Else
+                        If _acquisition = True Then
+
+                        End If
                         ' Parse the data using the parseData function
                         Me.Invoke(Sub() parseData(incoming.ToString))
                     End If
@@ -707,4 +711,14 @@ Public Class frmMain
 
     End Sub
 
+    ' Fixes Issue #3 by providing button to start/stop data acquisition
+    Private Sub btn_AcquisitionStartStop_Click(sender As Object, e As EventArgs) Handles btn_AcquisitionStartStop.Click
+        If _acquisition Then
+            _acquisition = False
+            btn_AcquisitionStartStop.Text = "Start Acquisition"
+        Else
+            _acquisition = True
+            btn_AcquisitionStartStop.Text = "Stop Acquisition"
+        End If
+    End Sub
 End Class

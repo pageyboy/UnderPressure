@@ -111,6 +111,7 @@ Partial Class frmMain
         Me.chkBox_LeakTest = New System.Windows.Forms.CheckBox()
         Me.lbl_Atribution = New System.Windows.Forms.LinkLabel()
         Me.lbl_Developer = New System.Windows.Forms.LinkLabel()
+        Me.btn_AcquisitionStartStop = New System.Windows.Forms.Button()
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         CType(Me.chart_Data, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -141,7 +142,7 @@ Partial Class frmMain
         Me.TabControl1.Controls.Add(Me.TabPage2)
         Me.TabControl1.Controls.Add(Me.TabPage3)
         Me.TabControl1.Font = New System.Drawing.Font("Arial monospaced for SAP", 13.0!)
-        Me.TabControl1.Location = New System.Drawing.Point(12, 454)
+        Me.TabControl1.Location = New System.Drawing.Point(12, 507)
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
         Me.TabControl1.Size = New System.Drawing.Size(1410, 274)
@@ -276,7 +277,7 @@ Partial Class frmMain
         'num_DataPoints
         '
         Me.num_DataPoints.Font = New System.Drawing.Font("Arial monospaced for SAP", 26.25!)
-        Me.num_DataPoints.Location = New System.Drawing.Point(770, 12)
+        Me.num_DataPoints.Location = New System.Drawing.Point(757, 12)
         Me.num_DataPoints.Maximum = New Decimal(New Integer() {1500, 0, 0, 0})
         Me.num_DataPoints.Minimum = New Decimal(New Integer() {25, 0, 0, 0})
         Me.num_DataPoints.Name = "num_DataPoints"
@@ -288,7 +289,7 @@ Partial Class frmMain
         '
         Me.lbl_DataPoints.AutoSize = True
         Me.lbl_DataPoints.Font = New System.Drawing.Font("Arial monospaced for SAP", 15.0!)
-        Me.lbl_DataPoints.Location = New System.Drawing.Point(462, 23)
+        Me.lbl_DataPoints.Location = New System.Drawing.Point(449, 23)
         Me.lbl_DataPoints.Name = "lbl_DataPoints"
         Me.lbl_DataPoints.Size = New System.Drawing.Size(298, 23)
         Me.lbl_DataPoints.TabIndex = 25
@@ -299,7 +300,7 @@ Partial Class frmMain
         Me.TabControl2.Controls.Add(Me.TabPage4)
         Me.TabControl2.Controls.Add(Me.TabPage5)
         Me.TabControl2.Font = New System.Drawing.Font("Arial monospaced for SAP", 13.0!)
-        Me.TabControl2.Location = New System.Drawing.Point(12, 67)
+        Me.TabControl2.Location = New System.Drawing.Point(12, 120)
         Me.TabControl2.Name = "TabControl2"
         Me.TabControl2.SelectedIndex = 0
         Me.TabControl2.Size = New System.Drawing.Size(1410, 381)
@@ -1002,7 +1003,7 @@ Partial Class frmMain
         '
         Me.lbl_SecsConverter.AutoSize = True
         Me.lbl_SecsConverter.Font = New System.Drawing.Font("Arial monospaced for SAP", 15.0!)
-        Me.lbl_SecsConverter.Location = New System.Drawing.Point(881, 23)
+        Me.lbl_SecsConverter.Location = New System.Drawing.Point(868, 23)
         Me.lbl_SecsConverter.Name = "lbl_SecsConverter"
         Me.lbl_SecsConverter.Size = New System.Drawing.Size(178, 23)
         Me.lbl_SecsConverter.TabIndex = 27
@@ -1022,7 +1023,7 @@ Partial Class frmMain
         'lbl_Atribution
         '
         Me.lbl_Atribution.AutoSize = True
-        Me.lbl_Atribution.Location = New System.Drawing.Point(12, 733)
+        Me.lbl_Atribution.Location = New System.Drawing.Point(12, 786)
         Me.lbl_Atribution.Name = "lbl_Atribution"
         Me.lbl_Atribution.Size = New System.Drawing.Size(113, 13)
         Me.lbl_Atribution.TabIndex = 30
@@ -1031,7 +1032,7 @@ Partial Class frmMain
         '
         'lbl_Developer
         '
-        Me.lbl_Developer.Location = New System.Drawing.Point(955, 733)
+        Me.lbl_Developer.Location = New System.Drawing.Point(955, 786)
         Me.lbl_Developer.Name = "lbl_Developer"
         Me.lbl_Developer.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.lbl_Developer.Size = New System.Drawing.Size(447, 13)
@@ -1040,13 +1041,24 @@ Partial Class frmMain
         Me.lbl_Developer.Text = "Developer Placeholder"
         Me.lbl_Developer.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
+        'btn_AcquisitionStartStop
+        '
+        Me.btn_AcquisitionStartStop.Font = New System.Drawing.Font("Arial monospaced for SAP", 26.25!)
+        Me.btn_AcquisitionStartStop.Location = New System.Drawing.Point(12, 66)
+        Me.btn_AcquisitionStartStop.Name = "btn_AcquisitionStartStop"
+        Me.btn_AcquisitionStartStop.Size = New System.Drawing.Size(422, 48)
+        Me.btn_AcquisitionStartStop.TabIndex = 32
+        Me.btn_AcquisitionStartStop.Text = "Start Acquisition"
+        Me.btn_AcquisitionStartStop.UseVisualStyleBackColor = True
+        '
         'frmMain
         '
         Me.AcceptButton = Me.btn_Connection
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
-        Me.ClientSize = New System.Drawing.Size(1434, 752)
+        Me.ClientSize = New System.Drawing.Size(1434, 812)
+        Me.Controls.Add(Me.btn_AcquisitionStartStop)
         Me.Controls.Add(Me.lbl_Developer)
         Me.Controls.Add(Me.lbl_Atribution)
         Me.Controls.Add(Me.chkBox_LeakTest)
@@ -1059,8 +1071,8 @@ Partial Class frmMain
         Me.Controls.Add(Me.btn_Connection)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
-        Me.MaximumSize = New System.Drawing.Size(1450, 790)
-        Me.MinimumSize = New System.Drawing.Size(1450, 790)
+        Me.MaximumSize = New System.Drawing.Size(1450, 850)
+        Me.MinimumSize = New System.Drawing.Size(1450, 850)
         Me.Name = "frmMain"
         Me.Text = "Under Pressure - Drift Tube Pressure Monitor"
         Me.TabControl1.ResumeLayout(False)
@@ -1169,4 +1181,5 @@ Partial Class frmMain
     Friend WithEvents DTPressure As DataGridViewTextBoxColumn
     Friend WithEvents TFPressure As DataGridViewTextBoxColumn
     Friend WithEvents DiffPressure As DataGridViewTextBoxColumn
+    Friend WithEvents btn_AcquisitionStartStop As Button
 End Class
