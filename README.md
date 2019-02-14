@@ -58,6 +58,12 @@ The file that is downloaded may be quarantined by your AntiVirus and so you may 
 
 ![Leak test on screen information](https://raw.githubusercontent.com/pageyboy/UnderPressure/master/Readme%20Images/LeakTest.png)
 
+**Dummy Instrument**
+
+For testing away from a real instrument and to speed up development a dummy instrument was quickly developed for offline testing. This is available in addition to the tool itself and can be found under [Dummy Serial](https://github.com/pageyboy/UnderPressure/tree/master/DummySerial). It was developed using an [Arduino Uno](https://www.arduino.cc/) and randomly outputs an identical string to the G6560X IM-QTOF albeit more frequently at 40ms intervals rather than 400ms intervals.
+
+To use the Dummy Instrument simply flash the Arduino with the C++ file provided and select the COM port that the Arduino is connected to the PC with. There is no need to set up a hyperterminal if demonstrating with the Dummy Instrument.
+
 ## Authors
 
 * **Chris Page** - *Initial Work* - [Pageyboy](https://github.com/pageyboy/)
