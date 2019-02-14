@@ -70,4 +70,4 @@ To use the Dummy Instrument simply flash the Arduino with the C++ file provided 
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](https://github.com/pageyboy/UnderPressure/blob/master/LICENSE) file for details
+This project is licensed under the MIT License - see the [LICENSE.md](https://github.com/pageyboy/UnderPressure/blob/master/LICENSE.md) file for details
