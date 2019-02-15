@@ -6,6 +6,7 @@ Imports System.ComponentModel
 Imports System.Collections.Generic
 Imports System.IO
 Imports System.Timers
+Imports System.Reflection
 
 Public Class frmMain
 
@@ -417,14 +418,21 @@ Public Class frmMain
         comboBox_SerialPorts.SelectedIndex = comboBox_SerialPorts.Items.Count - 1
         startTime = DateTime.UtcNow
 
+        Dim assemblyLocation = System.Reflection.Assembly.GetExecutingAssembly().Location
+        Dim fileVersion = System.Diagnostics.FileVersionInfo.GetVersionInfo(assemblyLocation).FileVersion
+        Debug.Print(fileVersion)
+
+        Me.Text = "Under Pressure - Drift Tube Pressure Monitor - v" & fileVersion
+
         ' Ensure that the correct Attribution is made as per the licencing
         lbl_Atribution.Text = "Icons made by Freepik from Flaticon is licensed by Creative Commons BY 3.0"
         lbl_Atribution.Links.Add(14, 7, "http://www.freepik.com")
         lbl_Atribution.Links.Add(27, 8, "https://www.flaticon.com/")
         lbl_Atribution.Links.Add(51, 23, "http://creativecommons.org/licenses/by/3.0/")
 
+        Dim emailLink As String = "mailto:chris.page@agilent.com?subject=Under%20Pressure%20v" & fileVersion
         lbl_Developer.Text = "Made in UK by Chris Page"
-        lbl_Developer.Links.Add(14, 10, "mailto: chris.page@agilent.com")
+        lbl_Developer.Links.Add(14, 10, emailLink)
 
         lbl_Github.Text = "Visit Github for the latest updates and information"
         lbl_Github.Links.Add(6, 6, "https://github.com/pageyboy/UnderPressure")

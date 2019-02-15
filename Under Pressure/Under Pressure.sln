@@ -21,5 +21,36 @@ Global
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {683A7BA6-ED9E-4E23-8AD6-7FCA6D92B8E7}
+		BuildVersion_StartDate = 2018/7/24
+		BuildVersion_BuildVersioningStyle = None.None.Increment.TimeStamp
+		BuildVersion_UpdateAssemblyVersion = True
+		BuildVersion_UpdateFileVersion = True
+		BuildVersion_AssemblyInfoFilename = Under Pressure\My Project\AssemblyInfo.vb
+	EndGlobalSection
+	GlobalSection(AutomaticVersions) = postSolution
+		UpdateAssemblyVersion = False
+		UpdateAssemblyFileVersion = False
+		UpdateAssemblyInfoVersion = False
+		UpdatePackageVersion = False
+		AssemblyInfoVersionType = SettingsVersion
+		InheritWinAppVersionFrom = None
+		UpdateAssemblyVersion.Debug|Any CPU = True
+		UpdateAssemblyFileVersion.Debug|Any CPU = True
+		UpdateAssemblyInfoVersion.Debug|Any CPU = True
+		AssemblyVersionSettings.Debug|Any CPU = None.None.Increment.HalfOfSecondsSinceMidnight
+		AssemblyFileVersionSettings.Debug|Any CPU = None.None.Increment.HalfOfSecondsSinceMidnight
+		AssemblyInfoVersionSettings.Debug|Any CPU = None.None.Increment.HalfOfSecondsSinceMidnight
+		UpdatePackageVersion.Debug|Any CPU = False
+		AssemblyInfoVersionType.Debug|Any CPU = SettingsVersion
+		InheritWinAppVersionFrom.Debug|Any CPU = None
+		UpdateAssemblyVersion.Release|Any CPU = True
+		UpdateAssemblyFileVersion.Release|Any CPU = True
+		UpdateAssemblyInfoVersion.Release|Any CPU = True
+		AssemblyVersionSettings.Release|Any CPU = None.Increment.Increment.HalfOfSecondsSinceMidnight
+		AssemblyFileVersionSettings.Release|Any CPU = None.Increment.Increment.HalfOfSecondsSinceMidnight
+		AssemblyInfoVersionSettings.Release|Any CPU = None.Increment.Increment.HalfOfSecondsSinceMidnight
+		UpdatePackageVersion.Release|Any CPU = False
+		AssemblyInfoVersionType.Release|Any CPU = SettingsVersion
+		InheritWinAppVersionFrom.Release|Any CPU = None
 	EndGlobalSection
 EndGlobal
