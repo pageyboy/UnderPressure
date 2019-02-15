@@ -18,6 +18,7 @@
 
 # Build results
 [Dd]ebug/
+*/**/bin/Debug
 [Dd]ebugPublic/
 [Rr]elease/
 [Rr]eleases/
